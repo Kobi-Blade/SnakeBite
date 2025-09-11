@@ -1,0 +1,37 @@
+name: Build SnakeBite
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+env:
+  BUILD_CONFIGURATION: Release
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@main
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@main
+
+    - name: Restore packages
+      run: nuget restore SnakeBite.sln
+
+    - name: Build SnakeBite
+      run: msbuild -m -p:Configuration=${{ env.BUILD_CONFIGURATION }}
+
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@main
+      with:
+       name: ${{ github.sha }}
+       path: |
+         SnakeBite/bin/${{env.BUILD_CONFIGURATION}}/
+         MakeBite/bin/${{env.BUILD_CONFIGURATION}}/
