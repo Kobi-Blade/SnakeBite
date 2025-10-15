@@ -17,7 +17,9 @@ namespace SnakeBite
         {
             RemoveOldFormatLogs();
             if (!Directory.Exists(logDir))
-                Directory.CreateDirectory(logDir);
+            {
+                _ = Directory.CreateDirectory(logDir);
+            }
 
             string logFilePath = Path.Combine(logDir, LOG_FILE_TXT);
             if (File.Exists(logFilePath))
@@ -33,10 +35,14 @@ namespace SnakeBite
         private static void RemoveOldFormatLogs()
         {
             if (File.Exists(LOG_FILE_PREV + TXT_EXT)) // old format in root install directory
+            {
                 File.Delete(LOG_FILE_PREV + TXT_EXT);
+            }
 
             if (File.Exists(LOG_FILE_TXT))
+            {
                 File.Delete(LOG_FILE_TXT);
+            }
         }
         private static void RecursiveCopyLogs(int i, int max)
         {
@@ -48,7 +54,9 @@ namespace SnakeBite
                 RecursiveCopyLogs(i + 1, max);
 
                 if (File.Exists(logPrevPath))
+                {
                     File.Copy(logPrevPath, logPrevIncrementedPath, true);
+                }
             }
 
         }
@@ -59,24 +67,31 @@ namespace SnakeBite
             {
                 string logPrevPath = Path.Combine(logDir, $"{LOG_FILE_PREV}.{i}{TXT_EXT}");
                 if (File.Exists(logPrevPath))
-                    Process.Start(logPrevPath);
+                {
+                    _ = Process.Start(logPrevPath);
+                }
             }
             string logFilePath = Path.Combine(logDir, LOG_FILE_TXT);
             if (File.Exists(logFilePath))
-                Process.Start(logFilePath);
+            {
+                _ = Process.Start(logFilePath);
+            }
         }
 
         public static void OpenLogDirectory()
         {
             if (!Directory.Exists(logDir))
-                Directory.CreateDirectory(logDir);
+            {
+                _ = Directory.CreateDirectory(logDir);
+            }
+
             try
             {
-                Process.Start(logDir);
+                _ = Process.Start(logDir);
             }
             catch
             {
-                Debug.LogLine(String.Format("Failed to open log directory: {0}", logDir), Debug.LogLevel.Basic);
+                Debug.LogLine(string.Format("Failed to open log directory: {0}", logDir), Debug.LogLevel.Basic);
             }
         }
 
@@ -85,7 +100,9 @@ namespace SnakeBite
             //if (LogLevel == 0) return;
 
             if (!Directory.Exists(logDir))
-                Directory.CreateDirectory(logDir);
+            {
+                _ = Directory.CreateDirectory(logDir);
+            }
 
             string logFilePath = Path.Combine(logDir, LOG_FILE_TXT);
             FileMode F = File.Exists(logFilePath) ? FileMode.Append : FileMode.Create;

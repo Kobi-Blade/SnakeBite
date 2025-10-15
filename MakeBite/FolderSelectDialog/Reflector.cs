@@ -15,8 +15,8 @@ namespace FolderSelect
     {
         #region variables
 
-        private string m_ns;
-        private Assembly m_asmb;
+        private readonly string m_ns;
+        private readonly Assembly m_asmb;
 
         #endregion variables
 
@@ -64,7 +64,9 @@ namespace FolderSelect
             string[] names = typeName.Split('.');
 
             if (names.Length > 0)
+            {
                 type = m_asmb.GetType(m_ns + "." + names[0]);
+            }
 
             for (int i = 1; i < names.Length; ++i)
             {

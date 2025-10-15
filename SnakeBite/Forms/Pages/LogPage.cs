@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SnakeBite.ModPages
@@ -16,7 +10,7 @@ namespace SnakeBite.ModPages
         //DEBUGNOWprivate System.Threading.Timer timer;
         private volatile bool stopTimer = false;
 
-        private Object thisLock = new Object();
+        private readonly object thisLock = new object();
 
         public LogPage()
         {
@@ -35,7 +29,7 @@ namespace SnakeBite.ModPages
               */
         }
 
-        delegate void WriteTextBox();
+        private delegate void WriteTextBox();
 
         private void UpdateProperty(object state)
         {
@@ -43,7 +37,7 @@ namespace SnakeBite.ModPages
             {
                 if (textLog.InvokeRequired)
                 {
-                    textLog.Invoke((MethodInvoker)delegate { UpdateProperty(state); });
+                    _ = textLog.Invoke((MethodInvoker)delegate { UpdateProperty(state); });
                 }
                 else
                 {
@@ -59,7 +53,7 @@ namespace SnakeBite.ModPages
         {
             if (textLog.InvokeRequired)
             {
-                textLog.Invoke((MethodInvoker)delegate { UpdateLog(); });
+                _ = textLog.Invoke((MethodInvoker)delegate { UpdateLog(); });
             }
             else
             {
@@ -72,7 +66,7 @@ namespace SnakeBite.ModPages
 
         public void ClearPage()
         {
-            logStringBuilder.Clear();
+            _ = logStringBuilder.Clear();
         }
 
         private void formLog_FormClosing(object sender, FormClosingEventArgs e)

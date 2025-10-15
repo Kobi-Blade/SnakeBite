@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 
-namespace makebite
+namespace MakeBite
 {
     public partial class formMain : Form
     {
@@ -19,7 +19,10 @@ namespace makebite
         {
             FolderSelectDialog fsd = new FolderSelectDialog();
 
-            if (fsd.ShowDialog() != true) return;
+            if (fsd.ShowDialog() != true)
+            {
+                return;
+            }
 
             listModFiles.Items.Clear();
 
@@ -36,7 +39,8 @@ namespace makebite
             foreach (string fpkFile in Directory.GetFiles(modPath, "*.fpk*", SearchOption.AllDirectories))
             {
                 //tex chunk0\Assets\tpp\pack\collectible\common\col_common_tpp_fpk\Assets\tpp\pack\resident\resident00.fpkl is the only fpkl, don't know what a fpkl is, but gzcore crashes on it. also checks for xml in case user opened the fpk with gzstool and produced a xml file
-                if (fpkFile.EndsWith(".fpkl") || fpkFile.EndsWith(".xml")) {
+                if (fpkFile.EndsWith(".fpkl") || fpkFile.EndsWith(".xml"))
+                {
                     continue;
                 }
 
@@ -44,7 +48,7 @@ namespace makebite
                 if (!Directory.Exists(fpkDir))
                 {
                     //extract fpk
-                    GzsLib.ExtractArchive<FpkFile>(fpkFile, fpkDir);
+                    _ = GzsLib.ExtractArchive<FpkFile>(fpkFile, fpkDir);
                 }
             }
 
@@ -54,7 +58,7 @@ namespace makebite
                 //GOTCHA: IsValidFile is only roughly accurate for this purpose, but listModFiles is only currently being used as non interactive user feedback so no big issue.
                 if ((Tools.IsValidFile(filePath) || filePath.Contains("/GameDir")) && filePath != "/metadata.xml")
                 {
-                    listModFiles.Items.Add(filePath);
+                    _ = listModFiles.Items.Add(filePath);
                 }
             }
 
@@ -68,7 +72,7 @@ namespace makebite
                 textModAuthor.Text = modMetaData.Author;
                 textModWebsite.Text = modMetaData.Website;
                 textModDescription.Text = modMetaData.Description.Replace("\n", "\r\n");
-                string mgsvVersion = modMetaData.MGSVersion.AsString(); 
+                string mgsvVersion = modMetaData.MGSVersion.AsString();
                 bool foundVersion = false;
                 foreach (string li in comboForVersion.Items)
                 {
@@ -79,8 +83,9 @@ namespace makebite
                         break;
                     }
                 }
-                if (!foundVersion) {
-                    comboForVersion.Items.Add(mgsvVersion);
+                if (!foundVersion)
+                {
+                    _ = comboForVersion.Items.Add(mgsvVersion);
                     comboForVersion.Text = mgsvVersion;
                 }
             }
@@ -95,24 +100,31 @@ namespace makebite
 
         private void buttonBuild_Click(object sender, EventArgs e)
         {
-            SaveFileDialog saveMod = new SaveFileDialog();
-            saveMod.Filter = "MGSV Mod File|*.mgsv";
+            SaveFileDialog saveMod = new SaveFileDialog
+            {
+                Filter = "MGSV Mod File|*.mgsv"
+            };
             DialogResult saveResult = saveMod.ShowDialog();
-            if (saveResult != DialogResult.OK) return;
+            if (saveResult != DialogResult.OK)
+            {
+                return;
+            }
 
             string modPath = saveMod.FileName;
 
             DoBuild(modPath);
 
-            MessageBox.Show("Build completed.", "MakeBite", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            _ = MessageBox.Show("Build completed.", "MakeBite", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void DoBuild(string outputFilePath)
         {
-            ModEntry modMetaData = new ModEntry();
-            modMetaData.Name = textModName.Text;
-            modMetaData.Author = textModAuthor.Text;
-            modMetaData.Version = textModVersion.Text;
+            ModEntry modMetaData = new ModEntry
+            {
+                Name = textModName.Text,
+                Author = textModAuthor.Text,
+                Version = textModVersion.Text
+            };
             modMetaData.MGSVersion.Version = comboForVersion.Text;
             modMetaData.Website = textModWebsite.Text;
             modMetaData.Description = textModDescription.Text;
@@ -123,15 +135,22 @@ namespace makebite
 
         private void buttonMetaSave_Click(object sender, EventArgs e)
         {
-            SaveFileDialog SaveMeta = new SaveFileDialog();
-            SaveMeta.Filter = "Metadata XML|*.xml";
+            SaveFileDialog SaveMeta = new SaveFileDialog
+            {
+                Filter = "Metadata XML|*.xml"
+            };
             DialogResult SaveResult = SaveMeta.ShowDialog();
-            if (SaveResult != DialogResult.OK) return;
+            if (SaveResult != DialogResult.OK)
+            {
+                return;
+            }
 
-            ModEntry modMetaData = new ModEntry();
-            modMetaData.Name = textModName.Text;
-            modMetaData.Author = textModAuthor.Text;
-            modMetaData.Version = textModVersion.Text;
+            ModEntry modMetaData = new ModEntry
+            {
+                Name = textModName.Text,
+                Author = textModAuthor.Text,
+                Version = textModVersion.Text
+            };
             modMetaData.MGSVersion.Version = comboForVersion.Text;
             modMetaData.Website = textModWebsite.Text;
             modMetaData.Description = textModDescription.Text;
@@ -140,10 +159,15 @@ namespace makebite
 
         private void buttonMetaLoad_Click(object sender, EventArgs e)
         {
-            OpenFileDialog LoadMeta = new OpenFileDialog();
-            LoadMeta.Filter = "Metadata XML|*.xml";
+            OpenFileDialog LoadMeta = new OpenFileDialog
+            {
+                Filter = "Metadata XML|*.xml"
+            };
             DialogResult LoadResult = LoadMeta.ShowDialog();
-            if (LoadResult != DialogResult.OK) return;
+            if (LoadResult != DialogResult.OK)
+            {
+                return;
+            }
 
             ModEntry modMetaData = new ModEntry();
             modMetaData.ReadFromFile(LoadMeta.FileName);
@@ -171,7 +195,10 @@ namespace makebite
         {
             string[] args = Environment.GetCommandLineArgs();
             string modPath = Properties.Settings.Default.LastModDir;
-            if (args.Length == 2) modPath = Path.GetFullPath(args[1]);//first arg (0) is always exePathFileName
+            if (args.Length == 2)
+            {
+                modPath = Path.GetFullPath(args[1]);//first arg (0) is always exePathFileName
+            }
 
             textModPath.Text = modPath;
             comboForVersion.SelectedIndex = comboForVersion.Items.Count - 1;
@@ -194,7 +221,7 @@ namespace makebite
             {
                 if (args.Length == 1)      // if folder doesnt exist reset path
                 {
-                    Properties.Settings.Default.LastModDir = String.Empty;
+                    Properties.Settings.Default.LastModDir = string.Empty;
                     Properties.Settings.Default.Save();
                 }
             }

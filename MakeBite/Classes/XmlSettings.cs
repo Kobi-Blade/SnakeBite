@@ -73,7 +73,10 @@ namespace SnakeBite
         {
             // Read mod metadata from xml
 
-            if (!File.Exists(Filename)) return;
+            if (!File.Exists(Filename))
+            {
+                return;
+            }
 
             XmlSerializer x = new XmlSerializer(typeof(ModEntry));
             StreamReader s = new StreamReader(Filename);
@@ -92,16 +95,20 @@ namespace SnakeBite
             {
                 if (MGSVersion == null)
                 {
-                    MGSVersion = new SerialVersion();
-                    MGSVersion.Version = "0.0.0.0";
+                    MGSVersion = new SerialVersion
+                    {
+                        Version = "0.0.0.0"
+                    };
                 }
                 if (SBVersion == null)
                 {
-                    SBVersion = new SerialVersion();
-                    SBVersion.Version = "0.0.0.0";
+                    SBVersion = new SerialVersion
+                    {
+                        Version = "0.0.0.0"
+                    };
                 }
             }
-            
+
             Author = loaded.Author;
             Website = loaded.Website;
             Description = loaded.Description;
@@ -118,7 +125,10 @@ namespace SnakeBite
         {
             // Write mod metadata to XML
 
-            if (File.Exists(Filename)) File.Delete(Filename);
+            if (File.Exists(Filename))
+            {
+                File.Delete(Filename);
+            }
 
             XmlSerializer x = new XmlSerializer(typeof(ModEntry), new[] { typeof(ModEntry) });
             StreamWriter s = new StreamWriter(Filename);
@@ -157,7 +167,8 @@ namespace SnakeBite
     }
 
     [XmlType("FileEntry")]
-    public class ModFileEntry {
+    public class ModFileEntry
+    {
         [XmlAttribute("FilePath")]
         public string FilePath { get; set; }
 

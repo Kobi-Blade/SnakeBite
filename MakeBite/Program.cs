@@ -2,7 +2,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace makebite
+namespace MakeBite
 {
     internal static class Program
     {
@@ -12,19 +12,18 @@ namespace makebite
         [STAThread]
         private static void Main()
         {
-            ICSharpCode.SharpZipLib.Zip.ZipConstants.DefaultCodePage = 437;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
+
             Debug.Clear();
 
-            Debug.LogLine(String.Format(
+            Debug.LogLine(string.Format(
                 "MakeBite {0}\n" +
                 "{1}\n" +
                 "-------------------------",
                 Tools.GetMBVersion(),
                 Environment.OSVersion.VersionString));
-            
+
             Application.Run(new formMain());
         }
     }

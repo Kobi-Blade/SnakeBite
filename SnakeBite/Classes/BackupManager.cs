@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Threading;
@@ -12,22 +11,22 @@ namespace SnakeBite
 
         public static bool OriginalsExist()
         {
-            return (File.Exists(ZeroPath + original_ext) && File.Exists(OnePath + original_ext) && File.Exists(chunk0Path + original_ext));
+            return File.Exists(ZeroPath + original_ext) && File.Exists(OnePath + original_ext) && File.Exists(chunk0Path + original_ext);
         }
 
         public static bool OriginalZeroOneExist()
         {
-            return (File.Exists(ZeroPath + original_ext) && File.Exists(OnePath + original_ext));
+            return File.Exists(ZeroPath + original_ext) && File.Exists(OnePath + original_ext);
         }
 
         public static bool c7t7Exist()
         {
-            return (File.Exists(t7Path) && File.Exists(c7Path));
+            return File.Exists(t7Path) && File.Exists(c7Path);
         }
 
         public static bool ModsDisabled()
         {
-            return (File.Exists(ZeroPath + modded_ext) && File.Exists(OnePath + modded_ext));
+            return File.Exists(ZeroPath + modded_ext) && File.Exists(OnePath + modded_ext);
         }
 
         public static void RestoreOriginals()
@@ -56,14 +55,17 @@ namespace SnakeBite
                     if (File.Exists(sourceFullPath))
                     {
                         File.Delete(sourceFullPath);
-                        if (!fileEntryDirs.Contains(fullPathDir)) fileEntryDirs.Add(fullPathDir);
+                        if (!fileEntryDirs.Contains(fullPathDir))
+                        {
+                            fileEntryDirs.Add(fullPathDir);
+                        }
                     }
                 }
                 catch
                 {
                     Debug.LogLine("[Uninstall] Could not delete " + fileModPath);
                 }
-                
+
             }
 
             foreach (string fileEntryDir in fileEntryDirs)
@@ -91,11 +93,30 @@ namespace SnakeBite
             {
                 Thread.Sleep(100);
                 fileExists = false;
-                if (File.Exists(ZeroPath)) fileExists = true;
-                if (File.Exists(OnePath)) fileExists = true;
-                if (File.Exists(chunk0Path)) fileExists = true;
-                if (File.Exists(c7Path)) fileExists = true;
-                if (File.Exists(t7Path)) fileExists = true;
+                if (File.Exists(ZeroPath))
+                {
+                    fileExists = true;
+                }
+
+                if (File.Exists(OnePath))
+                {
+                    fileExists = true;
+                }
+
+                if (File.Exists(chunk0Path))
+                {
+                    fileExists = true;
+                }
+
+                if (File.Exists(c7Path))
+                {
+                    fileExists = true;
+                }
+
+                if (File.Exists(t7Path))
+                {
+                    fileExists = true;
+                }
             }
 
             File.Move(ZeroPath + original_ext, ZeroPath);
@@ -171,14 +192,14 @@ namespace SnakeBite
 
         public static bool BackupExists()
         {
-            return (OriginalsExist());
+            return OriginalsExist();
         }
 
         public static bool GameFilesExist()
         {
-            return (File.Exists(ZeroPath) && File.Exists(OnePath) && File.Exists(chunk0Path));
+            return File.Exists(ZeroPath) && File.Exists(OnePath) && File.Exists(chunk0Path);
         }
-        
+
     }
 
     public enum BackupState

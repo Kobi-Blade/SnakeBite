@@ -1,13 +1,8 @@
-﻿using System.IO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GzsTool.Core.Fpk;
 using ICSharpCode.SharpZipLib.Zip;
 using SnakeBite.GzsTool;
-using GzsTool.Core.Fpk;
-using GzsTool.Core.Qar;
+using System.Collections.Generic;
+using System.IO;
 
 namespace SnakeBite.QuickMod
 {
@@ -19,21 +14,25 @@ namespace SnakeBite.QuickMod
             using (FileStream fs = new FileStream(ZipFile, FileMode.Open))
             using (ZipFile z = new ZipFile(fs))
             {
-                foreach(ZipEntry ze in z)
+                foreach (ZipEntry ze in z)
                 {
-                    if(ze.Name.Contains("chunk"))
+                    if (ze.Name.Contains("chunk"))
                     {
                         chunkPath = ze.Name;
                         break;
                     }
-                    if(ze.Name.Contains("Assets"))
+                    if (ze.Name.Contains("Assets"))
                     {
                         chunkPath = ze.Name.Substring(0, ze.Name.IndexOf("Assets"));
                         break;
                     }
                 }
-                if (chunkPath == string.Empty) return false;
-                Debug.LogLine(String.Format("[QuickMod] Quick Check Success: {0}", chunkPath));
+                if (chunkPath == string.Empty)
+                {
+                    return false;
+                }
+
+                Debug.LogLine(string.Format("[QuickMod] Quick Check Success: {0}", chunkPath));
                 return true;
             }
         }
@@ -43,14 +42,14 @@ namespace SnakeBite.QuickMod
             using (FileStream fs = new FileStream(ZipFile, FileMode.Open))
             using (ZipFile z = new ZipFile(fs))
             {
-                
+
                 foreach (ZipEntry ze in z)
                 {
-                    var lcn = ze.Name.ToLower();
+                    string lcn = ze.Name.ToLower();
                     if (lcn.Contains("chunk"))
                     {
-                        var chunkName = ze.Name.Substring(ze.Name.IndexOf("chunk"));
-                        chunkName = chunkName.Substring(0,chunkName.IndexOf("/"));
+                        string chunkName = ze.Name.Substring(ze.Name.IndexOf("chunk"));
+                        chunkName = chunkName.Substring(0, chunkName.IndexOf("/"));
                         chunkPath = ze.Name.Substring(0, ze.Name.IndexOf(chunkName) + chunkName.Length + 1);
                         break;
                     }
@@ -65,25 +64,38 @@ namespace SnakeBite.QuickMod
         }
         public static void ExtractFiles(string ZipFile, string OutputDir)
         {
-            if (Directory.Exists("_zip")) Directory.Delete("_zip", true);
+            if (Directory.Exists("_zip"))
+            {
+                Directory.Delete("_zip", true);
+            }
+
             string ModRoot = GetModRoot(ZipFile);
             FastZip z = new FastZip();
             z.ExtractZip(ZipFile, "_zip", ModRoot + ".*");
-            var f = Path.Combine("_zip", Tools.ToWinPath(ModRoot));
-            foreach (var file in Directory.GetFiles(f, "*", SearchOption.AllDirectories))
+            string f = Path.Combine("_zip", Tools.ToWinPath(ModRoot));
+            foreach (string file in Directory.GetFiles(f, "*", SearchOption.AllDirectories))
             {
-                
-                var newPath = Path.Combine(OutputDir,file.Substring(f.Length+1));
-                if (!Directory.Exists(Path.GetDirectoryName(newPath))) Directory.CreateDirectory(Path.GetDirectoryName(newPath));
+
+                string newPath = Path.Combine(OutputDir, file.Substring(f.Length + 1));
+                if (!Directory.Exists(Path.GetDirectoryName(newPath)))
+                {
+                    _ = Directory.CreateDirectory(Path.GetDirectoryName(newPath));
+                }
+
                 File.Move(file, newPath);
             }
-            if(Directory.Exists("_zip")) Directory.Delete("_zip", true);
+            if (Directory.Exists("_zip"))
+            {
+                Directory.Delete("_zip", true);
+            }
         }
         public static void GenerateMgsv(string MgsvFile, string ModName, string SourceFolder)
         {
-            ModEntry metaData = new ModEntry();
-            metaData.Name = ModName;
-            metaData.Author = "SnakeBite";
+            ModEntry metaData = new ModEntry
+            {
+                Name = ModName,
+                Author = "SnakeBite"
+            };
             metaData.MGSVersion.Version = "0.0.0.0";
             metaData.SBVersion.Version = ModManager.GetSBVersion().ToString();
             metaData.Version = "[QM]";
@@ -93,14 +105,14 @@ namespace SnakeBite.QuickMod
             List<ModFpkEntry> fpkEntries = new List<ModFpkEntry>();
             List<ModQarEntry> qarEntries = new List<ModQarEntry>();
 
-            foreach(var File in Directory.GetFiles(SourceFolder, "*", SearchOption.AllDirectories))
+            foreach (string File in Directory.GetFiles(SourceFolder, "*", SearchOption.AllDirectories))
             {
                 string ShortFileName = File.Substring(SourceFolder.Length + 1);
-                if(File.ToLower().EndsWith(".fpk") || File.ToLower().EndsWith(".fpkd"))
+                if (File.ToLower().EndsWith(".fpk") || File.ToLower().EndsWith(".fpkd"))
                 {
                     // do fpk
-                    var fpkCont = GzsLib.ListArchiveContents<FpkFile>(File);
-                    foreach(var fpkFile in fpkCont)
+                    List<string> fpkCont = GzsLib.ListArchiveContents<FpkFile>(File);
+                    foreach (string fpkFile in fpkCont)
                     {
                         fpkEntries.Add(new ModFpkEntry()
                         {
@@ -109,7 +121,8 @@ namespace SnakeBite.QuickMod
                             SourceType = FileSource.Mod
                         });
                     }
-                } else
+                }
+                else
                 {
                     // do qar
                     qarEntries.Add(new ModQarEntry() { FilePath = ShortFileName, SourceType = FileSource.Mod });

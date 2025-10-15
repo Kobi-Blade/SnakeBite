@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using static SnakeBite.GamePaths;
@@ -9,10 +8,10 @@ namespace SnakeBite.SetupWizard
 {
     public partial class SetupWizard : Form
     {
-        private IntroPage introPage = new IntroPage();
-        private FindInstallPage findInstallPage = new FindInstallPage();
-        private CreateBackupPage createBackupPage = new CreateBackupPage();
-        private MergeDatPage mergeDatPage = new MergeDatPage();
+        private readonly IntroPage introPage = new IntroPage();
+        private readonly FindInstallPage findInstallPage = new FindInstallPage();
+        private readonly CreateBackupPage createBackupPage = new CreateBackupPage();
+        private readonly MergeDatPage mergeDatPage = new MergeDatPage();
         private int displayPage = 0;
         private bool setupComplete = false;
         private SettingsManager manager = new SettingsManager(SnakeBiteSettings);
@@ -32,7 +31,9 @@ namespace SnakeBite.SetupWizard
         private void formSetupWizard_Closing(object sender, FormClosingEventArgs e)
         {
             if ((string)Tag == "noclose" && !(displayPage == 5))
+            {
                 e.Cancel = true;
+            }
         }
 
         private void buttonNext_Click(object sender, EventArgs e)
@@ -59,13 +60,13 @@ namespace SnakeBite.SetupWizard
                     manager = new SettingsManager(SnakeBiteSettings);
                     if (!manager.ValidInstallPath)
                     {
-                        MessageBox.Show("Please select a valid installation directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        _ = MessageBox.Show("Please select a valid installation directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
                     if (!BackupManager.GameFilesExist())
                     {
-                        MessageBox.Show("Some game data appears to be missing. If you have just revalidated the game data, please wait for Steam to finish downloading the new files before continuing.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        _ = MessageBox.Show("Some game data appears to be missing. If you have just revalidated the game data, please wait for Steam to finish downloading the new files before continuing.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                     // show create backup page, without processing panel, enable skip
@@ -81,29 +82,30 @@ namespace SnakeBite.SetupWizard
                     manager = new SettingsManager(SnakeBiteSettings);
                     if (!(manager.IsVanilla0001Size() || manager.IsVanilla0001DatHash()) && (SettingsManager.IntendedGameVersion >= ModManager.GetMGSVersion())) // not the right 00/01 and there hasn't been a game update
                     {
-                        var overWrite = MessageBox.Show(string.Format("Your existing game data contains unexpected filesizes, and is likely already modified or predates Game Version {0}." +
+                        DialogResult overWrite = MessageBox.Show(string.Format("Your existing game data contains unexpected filesizes, and is likely already modified or predates Game Version {0}." +
                             "\n\nIt is recommended that you do NOT store these files as backups, unless you are absolutely certain that they can reliably restore your game to a safe state!" +
                             "\n\nAre you sure you want to save these as backup data?", SettingsManager.IntendedGameVersion), "Unexpected 00.dat / 01.dat Filesizes", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                        if (overWrite != DialogResult.Yes) return;
+                        if (overWrite != DialogResult.Yes)
+                        {
+                            return;
+                        }
                     }
 
                     string overWriteMessage;
 
                     if (BackupManager.BackupExists())
                     {
-                        if (SettingsManager.IntendedGameVersion < ModManager.GetMGSVersion()) //A recent update has occurred and the user should probably create new backups
-                        {
-                            overWriteMessage = (string.Format("Some backup data already exists. Since this version of SnakeBite is intended for MGSV Version {0} and is now MGSV Version {1}, it is recommended that you overwrite your old backup files with new data.", SettingsManager.IntendedGameVersion, ModManager.GetMGSVersion()) +
-                                "\n\nContinue?");
-                        }
-                        else
-                        {
-                            overWriteMessage = "Some backup data already exists. Continuing will overwrite your existing backups." +
+                        overWriteMessage = SettingsManager.IntendedGameVersion < ModManager.GetMGSVersion()
+                            ? string.Format("Some backup data already exists. Since this version of SnakeBite is intended for MGSV Version {0} and is now MGSV Version {1}, it is recommended that you overwrite your old backup files with new data.", SettingsManager.IntendedGameVersion, ModManager.GetMGSVersion()) +
+                                "\n\nContinue?"
+                            : "Some backup data already exists. Continuing will overwrite your existing backups." +
                             "\n\nAre you sure you want to continue?";
-                        }
 
-                        var overWrite = MessageBox.Show(overWriteMessage, "Overwrite Existing Files?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                        if (overWrite != DialogResult.Yes) return;
+                        DialogResult overWrite = MessageBox.Show(overWriteMessage, "Overwrite Existing Files?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                        if (overWrite != DialogResult.Yes)
+                        {
+                            return;
+                        }
                     }
 
                     // create backup
@@ -145,8 +147,10 @@ namespace SnakeBite.SetupWizard
                     mergeDatPage.panelProcessing.Visible = true;
                     Application.UseWaitCursor = true;
 
-                    BackgroundWorker mergeProcessor = new BackgroundWorker();
-                    mergeProcessor.WorkerSupportsCancellation = true;
+                    BackgroundWorker mergeProcessor = new BackgroundWorker
+                    {
+                        WorkerSupportsCancellation = true
+                    };
                     mergeProcessor.DoWork += new DoWorkEventHandler(ModManager.backgroundWorker_MergeAndCleanup);
                     mergeProcessor.WorkerReportsProgress = true;
                     mergeProcessor.ProgressChanged += new ProgressChangedEventHandler(mergeProcessor_ProgressChanged);
@@ -158,7 +162,7 @@ namespace SnakeBite.SetupWizard
                         Application.DoEvents();
                         Thread.Sleep(40);
                     }
-                    
+
                     if (setupComplete)
                     {
                         Debug.LogLine("[Setup Wizard] Setup Complete. Snakebite is configured and ready to use.");
@@ -227,10 +231,7 @@ namespace SnakeBite.SetupWizard
 
         private void mergeProcessor_Completed(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (e.Cancelled)
-                setupComplete = false;
-            else
-                setupComplete = true;
+            setupComplete = !e.Cancelled;
 
         }
     }

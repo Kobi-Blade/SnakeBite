@@ -1,16 +1,16 @@
-﻿using System;
+﻿using SnakeBite.ModPages;
+using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using System.Diagnostics;
-using SnakeBite.ModPages;
+using System.Windows.Forms;
 
 namespace SnakeBite
 {
     public partial class formSettings : Form
     {
-        List<string> themeFiles = new List<string>() { "" };
-        SettingsManager manager = new SettingsManager(GamePaths.SnakeBiteSettings);
-        LogPage log = new LogPage();
+        private readonly List<string> themeFiles = new List<string>() { "" };
+        private readonly SettingsManager manager = new SettingsManager(GamePaths.SnakeBiteSettings);
+        private readonly LogPage log = new LogPage();
 
         public formSettings()
         {
@@ -26,7 +26,8 @@ namespace SnakeBite
             }
             else
             {
-                if (BackupManager.OriginalZeroOneExist()) {
+                if (BackupManager.OriginalZeroOneExist())
+                {
                     labelNoBackups.Text = "chunk0 backup not detected.\nCannot restore backup game files.";
                     buttonRestoreOriginals.Enabled = false;
                     picModToggle.Enabled = true;
@@ -43,14 +44,17 @@ namespace SnakeBite
 
         private void buttonRestoreOriginals_Click(object sender, EventArgs e)
         {
-            var restoreData = MessageBox.Show("Your saved backup files will be restored, and any SnakeBite settings and mods will be completely removed.\n\nAre you sure you want to continue?", "SnakeBite", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (restoreData != DialogResult.Yes) return;
+            DialogResult restoreData = MessageBox.Show("Your saved backup files will be restored, and any SnakeBite settings and mods will be completely removed.\n\nAre you sure you want to continue?", "SnakeBite", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (restoreData != DialogResult.Yes)
+            {
+                return;
+            }
 
             BackupManager.RestoreOriginals();
             try
             {
                 manager.DeleteSettings();
-                MessageBox.Show("Backups restored. SnakeBite will now close.", "SnakeBite", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                _ = MessageBox.Show("Backups restored. SnakeBite will now close.", "SnakeBite", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch { }
             Application.Exit();
@@ -74,24 +78,31 @@ namespace SnakeBite
 
         private void buttonSetup(object sender, EventArgs e)
         {
-            SetupWizard.SetupWizard setupWizard = new SetupWizard.SetupWizard();
-            setupWizard.Tag = "closable";
-            setupWizard.ShowDialog(Application.OpenForms[0]);
+            SetupWizard.SetupWizard setupWizard = new SetupWizard.SetupWizard
+            {
+                Tag = "closable"
+            };
+            _ = setupWizard.ShowDialog(Application.OpenForms[0]);
             UpdateModToggle();
             CheckBackupState();
         }
 
         private void linkNexusLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start(labelNexusLink.Text);
+            _ = Process.Start(labelNexusLink.Text);
         }
 
         private void buttonFindMGSV_Click(object sender, EventArgs e)
         {
-            OpenFileDialog findMGSV = new OpenFileDialog();
-            findMGSV.Filter = "Metal Gear Solid V|MGSVTPP.exe";
+            OpenFileDialog findMGSV = new OpenFileDialog
+            {
+                Filter = "Metal Gear Solid V|MGSVTPP.exe"
+            };
             DialogResult findResult = findMGSV.ShowDialog();
-            if (findResult != DialogResult.OK) return;
+            if (findResult != DialogResult.OK)
+            {
+                return;
+            }
 
             string filePath = findMGSV.FileName.Substring(0, findMGSV.FileName.LastIndexOf("\\"));
             if (filePath != textInstallPath.Text)
@@ -99,8 +110,8 @@ namespace SnakeBite
                 textInstallPath.Text = filePath;
                 Properties.Settings.Default.InstallPath = filePath;
                 Properties.Settings.Default.Save();
-                MessageBox.Show("SnakeBite will now restart.", "SnakeBite", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                System.Diagnostics.Process.Start("SnakeBite.exe");
+                _ = MessageBox.Show("SnakeBite will now restart.", "SnakeBite", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                _ = System.Diagnostics.Process.Start("SnakeBite.exe");
                 Application.Exit();
             }
         }
@@ -115,7 +126,7 @@ namespace SnakeBite
             //listThemes.SelectedIndex = 0;
             UpdateModToggle();
             CheckBackupState();
-            
+
             /*
             if (Directory.Exists("Themes"))
             {
@@ -168,7 +179,8 @@ namespace SnakeBite
         }
         */
 
-        private void buttonOpenLogDir_Click(object sender, EventArgs e) {
+        private void buttonOpenLogDir_Click(object sender, EventArgs e)
+        {
             Debug.OpenLogDirectory();
         }
 

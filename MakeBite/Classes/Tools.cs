@@ -1,12 +1,12 @@
 ﻿using GzsTool.Core.Utility;
+using ICSharpCode.SharpZipLib.Zip;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using ICSharpCode.SharpZipLib.Zip;
-using System.Xml.Serialization;
 using System.Threading;
+using System.Xml.Serialization;
 
 namespace SnakeBite
 {
@@ -162,19 +162,26 @@ namespace SnakeBite
 
         public static ModEntry ReadMetaData(string ModFile)
         {
-            if (!File.Exists(ModFile)) return null;
+            if (!File.Exists(ModFile))
+            {
+                return null;
+            }
 
             try
             {
                 using (FileStream streamMod = new FileStream(ModFile, FileMode.Open))
                 using (ZipFile zipMod = new ZipFile(streamMod))
                 {
-                    var metaIndex = zipMod.FindEntry("metadata.xml", true);
-                    if (metaIndex == -1) return null;
+                    int metaIndex = zipMod.FindEntry("metadata.xml", true);
+                    if (metaIndex == -1)
+                    {
+                        return null;
+                    }
+
                     using (StreamReader metaReader = new StreamReader(zipMod.GetInputStream(metaIndex)))
                     {
                         XmlSerializer x = new XmlSerializer(typeof(ModEntry));
-                        var metaData = (ModEntry)x.Deserialize(metaReader);
+                        ModEntry metaData = (ModEntry)x.Deserialize(metaReader);
                         return metaData;
                     }
                 }
@@ -182,7 +189,7 @@ namespace SnakeBite
             catch { return null; }
 
         }
-        
+
         public static string ToWinPath(string Path)
         {
             return Path.Replace("/", "\\").TrimStart('\\');
@@ -196,9 +203,9 @@ namespace SnakeBite
         internal static string GetMd5Hash(string FileName)
         {
             byte[] hashBytes;
-            using (var hashMD5 = MD5.Create())
+            using (MD5 hashMD5 = MD5.Create())
             {
-                using (var stream = File.OpenRead(FileName))
+                using (FileStream stream = File.OpenRead(FileName))
                 {
                     hashBytes = hashMD5.ComputeHash(stream);
                 }
@@ -207,7 +214,9 @@ namespace SnakeBite
             StringBuilder hashBuilder = new StringBuilder(hashBytes.Length * 2);
 
             for (int i = 0; i < hashBytes.Length; i++)
-                hashBuilder.Append(hashBytes[i].ToString("X2"));
+            {
+                _ = hashBuilder.Append(hashBytes[i].ToString("X2"));
+            }
 
             return hashBuilder.ToString();
         }
@@ -218,7 +227,8 @@ namespace SnakeBite
             string filePath = Tools.ToQarPath(FileName);
             ulong hash = Hashing.HashFileNameWithExtension(filePath);
             // find hashed names, which will be in root
-            if (!filePath.Substring(1).Contains("/")) {
+            if (!filePath.Substring(1).Contains("/"))
+            {
                 // try to parse hash from filename
                 string fileName = filePath.TrimStart('/');
                 string fileNoExt = fileName.Substring(0, fileName.IndexOf("."));
@@ -231,7 +241,9 @@ namespace SnakeBite
                     //TODO: create Hashing.HashFileExtension
                     ulong ExtHash = Hashing.HashFileName(fileExt, false) & 0x1FFF;
                     hash = (ExtHash << 51) | hash;
-                } else {//tex attempted fix for above
+                }
+                else
+                {//tex attempted fix for above
                     hash = Hashing.HashFileNameWithExtension(filePath);
                 }
             }
@@ -252,8 +264,7 @@ namespace SnakeBite
         internal static bool IsValidFile(string FilePath)
         {
             string ext = FilePath.Substring(FilePath.IndexOf(".") + 1);
-            if (DatFileExtensions.Contains(ext)) return true;
-            return false;
+            return DatFileExtensions.Contains(ext);
         }
 
         public static void DeleteDirectory(string target_dir)
@@ -275,7 +286,9 @@ namespace SnakeBite
             //Debug.LogLine("[Cleanup Debug] Deleting " + target_dir);
             DirectoryInfo target = new DirectoryInfo(target_dir);
             if (target.GetFiles().Length == 0)
+            {
                 Directory.Delete(target_dir, true);
+            }
             else
             {
                 Thread.Sleep(50);
@@ -293,7 +306,7 @@ namespace SnakeBite
                 // If the destination directory doesn't exist, create it.
                 if (!Directory.Exists(destDirName))
                 {
-                    Directory.CreateDirectory(destDirName);
+                    _ = Directory.CreateDirectory(destDirName);
                 }
 
                 // Get the files in the directory and copy them to the new location.
@@ -301,7 +314,7 @@ namespace SnakeBite
                 foreach (FileInfo file in files)
                 {
                     string temppath = Path.Combine(destDirName, file.Name);
-                    file.CopyTo(temppath, true);
+                    _ = file.CopyTo(temppath, true);
                 }
 
                 // If copying subdirectories, copy them and their contents to new location.
@@ -319,7 +332,7 @@ namespace SnakeBite
         public static string GetFileSizeKB(params string[] filePaths)
         {
             long size = 0;
-            foreach(string filePath in filePaths)
+            foreach (string filePath in filePaths)
             {
                 size += new FileInfo(filePath).Length;
             }
@@ -327,7 +340,8 @@ namespace SnakeBite
             return string.Format("{0:n0}", size / 1024);
         }
 
-        internal static Version GetMBVersion() {
+        internal static Version GetMBVersion()
+        {
             return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
         }
     }

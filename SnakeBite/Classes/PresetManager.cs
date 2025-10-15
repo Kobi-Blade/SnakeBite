@@ -8,7 +8,7 @@ using static SnakeBite.GamePaths;
 
 namespace SnakeBite
 {
-    static class PresetManager
+    internal static class PresetManager
     {
 
         /// <summary>
@@ -17,7 +17,7 @@ namespace SnakeBite
         public static bool SavePreset(string presetFilePath)
         {
             bool success = false;
-            Directory.CreateDirectory("_build\\master\\0");
+            _ = Directory.CreateDirectory("_build\\master\\0");
             SettingsManager manager = new SettingsManager(SnakeBiteSettings);
             string presetName = Path.GetFileName(presetFilePath);
             Debug.LogLine($"[SavePreset] Saving {presetName}...", Debug.LogLevel.Basic);
@@ -30,9 +30,12 @@ namespace SnakeBite
                     string DestDir = "_build\\" + Path.GetDirectoryName(gameFile);
                     string fileName = Path.GetFileName(gameFile);
 
-                    Directory.CreateDirectory(DestDir);
-                    if (File.Exists(sourcePath)) { Debug.LogLine(string.Format("[SavePreset] Copying to build directory: {0}", gameFile), Debug.LogLevel.Basic);  File.Copy(sourcePath, Path.Combine(DestDir, fileName), true); }
-                    else Debug.LogLine(string.Format("[SavePreset] File not found: {0}", sourcePath), Debug.LogLevel.Basic);
+                    _ = Directory.CreateDirectory(DestDir);
+                    if (File.Exists(sourcePath)) { Debug.LogLine(string.Format("[SavePreset] Copying to build directory: {0}", gameFile), Debug.LogLevel.Basic); File.Copy(sourcePath, Path.Combine(DestDir, fileName), true); }
+                    else
+                    {
+                        Debug.LogLine(string.Format("[SavePreset] File not found: {0}", sourcePath), Debug.LogLevel.Basic);
+                    }
                 }
                 Debug.LogLine("[SavePreset] Copying to build directory: 00.dat", Debug.LogLevel.Basic);
                 File.Copy(ZeroPath, "_build\\master\\0\\00.dat", true);
@@ -56,7 +59,7 @@ namespace SnakeBite
             }
             catch (Exception e)
             {
-                MessageBox.Show("An error has occurred and the preset was not saved.\nException: " + e);
+                _ = MessageBox.Show("An error has occurred and the preset was not saved.\nException: " + e);
             }
             finally
             {
@@ -71,7 +74,7 @@ namespace SnakeBite
         /// </summary>
         public static bool LoadPreset(string presetFilePath)
         {
-            bool panicMode = (!File.Exists(ZeroPath) || !File.Exists(OnePath) || !File.Exists(SnakeBiteSettings)); 
+            bool panicMode = !File.Exists(ZeroPath) || !File.Exists(OnePath) || !File.Exists(SnakeBiteSettings);
             bool success = false;
             ModManager.CleanupFolders();
             SettingsManager manager = new SettingsManager(SnakeBiteSettings);
@@ -97,7 +100,11 @@ namespace SnakeBite
                         {
                             Debug.LogLine(string.Format("[LoadPreset] Storing backup: {0}", gameFile), Debug.LogLevel.Basic);
                             fileEntryDirs.Add(Path.GetDirectoryName(gameFilePath));
-                            if (File.Exists(gameFilePath + build_ext)) File.Delete(gameFilePath + build_ext);
+                            if (File.Exists(gameFilePath + build_ext))
+                            {
+                                File.Delete(gameFilePath + build_ext);
+                            }
+
                             File.Move(gameFilePath, gameFilePath + build_ext);
                         }
                     }
@@ -124,7 +131,7 @@ namespace SnakeBite
             }
             catch (Exception e)
             {
-                MessageBox.Show("An error has occurred and the preset was not imported.\nException: " + e);
+                _ = MessageBox.Show("An error has occurred and the preset was not imported.\nException: " + e);
                 if (!panicMode)
                 {
                     Debug.LogLine("[LoadPreset] Restoring backup files", Debug.LogLevel.Basic);
@@ -137,7 +144,9 @@ namespace SnakeBite
                     {
                         string gameFilePath = Path.Combine(GameDir, Tools.ToWinPath(gameFile));
                         if (File.Exists(gameFilePath + build_ext))
+                        {
                             File.Copy(gameFilePath + build_ext, gameFilePath, true);
+                        }
                     }
                 }
             }
@@ -149,7 +158,10 @@ namespace SnakeBite
                     foreach (string gameFile in existingExternalFiles)
                     {
                         string gameFilePath = Path.Combine(GameDir, Tools.ToWinPath(gameFile));
-                        if (File.Exists(gameFilePath)) File.Delete(gameFilePath + build_ext);
+                        if (File.Exists(gameFilePath))
+                        {
+                            File.Delete(gameFilePath + build_ext);
+                        }
                     }
 
                     foreach (string fileEntryDir in fileEntryDirs)
@@ -160,7 +172,7 @@ namespace SnakeBite
                             {
                                 if (Directory.GetFiles(fileEntryDir).Length == 0)
                                 {
-                                    Debug.LogLine(String.Format("[SB_Build] deleting empty folder: {0}", fileEntryDir), Debug.LogLevel.All);
+                                    Debug.LogLine(string.Format("[SB_Build] deleting empty folder: {0}", fileEntryDir), Debug.LogLevel.All);
                                     Directory.Delete(fileEntryDir);
                                 }
                             }
@@ -182,26 +194,33 @@ namespace SnakeBite
 
         public static bool isPresetUpToDate(Settings presetSettings)
         {
-                var presetVersion = presetSettings.MGSVersion.AsVersion();
-                var MGSVersion = ModManager.GetMGSVersion();
-                return (presetVersion == MGSVersion);
+            Version presetVersion = presetSettings.MGSVersion.AsVersion();
+            Version MGSVersion = ModManager.GetMGSVersion();
+            return presetVersion == MGSVersion;
         }
 
         public static Settings ReadSnakeBiteSettings(string PresetFilePath)
         {
-            if (!File.Exists(PresetFilePath)) return null;
+            if (!File.Exists(PresetFilePath))
+            {
+                return null;
+            }
 
             try
             {
                 using (FileStream streamPreset = new FileStream(PresetFilePath, FileMode.Open))
                 using (ZipFile zipMod = new ZipFile(streamPreset))
                 {
-                    var sbIndex = zipMod.FindEntry("snakebite.xml", true);
-                    if (sbIndex == -1) return null;
+                    int sbIndex = zipMod.FindEntry("snakebite.xml", true);
+                    if (sbIndex == -1)
+                    {
+                        return null;
+                    }
+
                     using (StreamReader sbReader = new StreamReader(zipMod.GetInputStream(sbIndex)))
                     {
                         XmlSerializer x = new XmlSerializer(typeof(Settings));
-                        var settings = (Settings)x.Deserialize(sbReader);
+                        Settings settings = (Settings)x.Deserialize(sbReader);
                         return settings;
                     }
                 }

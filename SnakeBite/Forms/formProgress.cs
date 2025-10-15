@@ -13,8 +13,8 @@ namespace SnakeBite
 
         private void formProgress_VisibleChanged(object sender, EventArgs e)
         {
-            this.Refresh();
-            this.Width = StatusText.Left + StatusText.Width + 32;
+            Refresh();
+            Width = StatusText.Left + StatusText.Width + 32;
         }
 
         public void progressWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)

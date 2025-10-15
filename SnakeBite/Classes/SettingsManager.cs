@@ -8,7 +8,7 @@ using static SnakeBite.GamePaths;
 
 namespace SnakeBite
 {
-    
+
     public class SettingsManager
     {
         // GAMEVERSION > You will have to update everything here when the game updates, search for GAMEVERSION to find other areas than need to be updated
@@ -51,10 +51,10 @@ namespace SnakeBite
             List<string> noUpdateQars = new List<string>();
             Dictionary<string, string> newNameDictionary = new Dictionary<string, string>();
 
-            int foundUpdate = 0; 
+            int foundUpdate = 0;
             foreach (ModQarEntry QarEntry in settings.GameData.GameQarEntries)
             {
-                if (QarEntry.FilePath.StartsWith("/Assets/")) { noUpdateQars.Add(QarEntry.FilePath);  continue; }
+                if (QarEntry.FilePath.StartsWith("/Assets/")) { noUpdateQars.Add(QarEntry.FilePath); continue; }
                 string unhashedName = HashingExtended.UpdateName(QarEntry.FilePath);
                 if (unhashedName != null)
                 {
@@ -72,19 +72,22 @@ namespace SnakeBite
             {
                 foreach (ModFpkEntry modFpkEntry in settings.GameData.GameFpkEntries.Where(entry => !noUpdateQars.Contains(entry.FpkFile)))
                 {
-                    string unHashedName;
-                    if (newNameDictionary.TryGetValue(modFpkEntry.FpkFile, out unHashedName))
+                    if (newNameDictionary.TryGetValue(modFpkEntry.FpkFile, out string unHashedName))
+                    {
                         modFpkEntry.FpkFile = unHashedName;
+                    }
                 }
             }
-            foreach (ModEntry mod in settings.ModEntries) {
+            foreach (ModEntry mod in settings.ModEntries)
+            {
                 noUpdateQars.Clear();
                 foreach (ModQarEntry modQar in mod.ModQarEntries)
                 {
                     if (modQar.FilePath.StartsWith("/Assets/")) { noUpdateQars.Add(modQar.FilePath); continue; }
-                    string unHashedName;
-                    if (newNameDictionary.TryGetValue(modQar.FilePath, out unHashedName))
+                    if (newNameDictionary.TryGetValue(modQar.FilePath, out string unHashedName))
+                    {
                         modQar.FilePath = unHashedName;
+                    }
                     else
                     {
                         unHashedName = HashingExtended.UpdateName(modQar.FilePath);
@@ -104,9 +107,10 @@ namespace SnakeBite
                 {
                     foreach (ModFpkEntry modFpkEntry in mod.ModFpkEntries.Where(entry => !noUpdateQars.Contains(entry.FpkFile)))
                     {
-                        string unHashedName;
-                        if (newNameDictionary.TryGetValue(modFpkEntry.FpkFile, out unHashedName))
+                        if (newNameDictionary.TryGetValue(modFpkEntry.FpkFile, out string unHashedName))
+                        {
                             modFpkEntry.FpkFile = unHashedName;
+                        }
                     }
                 }
             }
@@ -122,27 +126,24 @@ namespace SnakeBite
             {
                 foreach (ModQarEntry qarFile in mod.ModQarEntries)
                 {
-                    string fileName;
-                    if (HideExtension)
-                    {
-                        fileName = Tools.ToQarPath(qarFile.FilePath.Substring(0, qarFile.FilePath.IndexOf(".")));
-                    }
-                    else
-                    {
-                        fileName = Tools.ToQarPath(qarFile.FilePath);
-                    }
+                    string fileName = HideExtension
+                        ? Tools.ToQarPath(qarFile.FilePath.Substring(0, qarFile.FilePath.IndexOf(".")))
+                        : Tools.ToQarPath(qarFile.FilePath);
                     qarList.Add(fileName);
                 }
             }
             return qarList;
         }
 
-        public List<string> GetModExternalFiles() {
+        public List<string> GetModExternalFiles()
+        {
             Settings settings = new Settings();
             settings.LoadFrom(xmlFilePath);
             List<string> fileList = new List<string>();
-            foreach (ModEntry mod in settings.ModEntries) {
-                foreach (ModFileEntry fpkFile in mod.ModFileEntries) {
+            foreach (ModEntry mod in settings.ModEntries)
+            {
+                foreach (ModFileEntry fpkFile in mod.ModFileEntries)
+                {
                     fileList.Add(Tools.ToQarPath(fpkFile.FilePath));
                 }
             }
@@ -186,7 +187,7 @@ namespace SnakeBite
             Settings settings = new Settings();
             settings.LoadFrom(xmlFilePath);
             ModEntry remMod = settings.ModEntries.Find(entry => entry.Name == Mod.Name);
-            settings.ModEntries.Remove(remMod);
+            _ = settings.ModEntries.Remove(remMod);
             settings.SaveTo(xmlFilePath);
         }
 
@@ -238,11 +239,11 @@ namespace SnakeBite
         {
             Settings settings = new Settings();
             settings.LoadFrom(xmlFilePath);
-             
+
             // Hash 01.dat and update settings file
             string datHash = Tools.GetMd5Hash(ZeroPath) + Tools.GetMd5Hash(OnePath);
             settings.GameData.DatHash = datHash;
-            Debug.LogLine(String.Format("[UpdateDatHash] Updated 00/01 dat hash to: {0}", datHash), Debug.LogLevel.All);
+            Debug.LogLine(string.Format("[UpdateDatHash] Updated 00/01 dat hash to: {0}", datHash), Debug.LogLevel.All);
             settings.SaveTo(xmlFilePath);
         }
 
@@ -253,8 +254,8 @@ namespace SnakeBite
 
         public bool IsVanilla0001Size() //shouldn't be in settingsmanager
         {
-            var zeroSize = new System.IO.FileInfo(ZeroPath).Length;
-            var oneSize = new System.IO.FileInfo(OnePath).Length;
+            long zeroSize = new System.IO.FileInfo(ZeroPath).Length;
+            long oneSize = new System.IO.FileInfo(OnePath).Length;
             if (MINZEROSIZE < zeroSize && zeroSize < MAXZEROSIZE)
             {
                 if (MINONESIZE < oneSize && oneSize < MAXONESIZE)
@@ -282,21 +283,22 @@ namespace SnakeBite
 
         internal bool ValidateDatHash()
         {
-            if (File.Exists(xmlFilePath)) {
+            if (File.Exists(xmlFilePath))
+            {
                 string datHash = Tools.GetMd5Hash(ZeroPath) + Tools.GetMd5Hash(OnePath);
                 string hashOld = GetGameData().DatHash;
                 if (datHash == hashOld)
                 {
-                    Debug.LogLine(String.Format("[ValidateDatHash] 00/01 dat hash match:\n{0} (Found Hash) == {1} (Expected Hash)", datHash, hashOld), Debug.LogLevel.All);
+                    Debug.LogLine(string.Format("[ValidateDatHash] 00/01 dat hash match:\n{0} (Found Hash) == {1} (Expected Hash)", datHash, hashOld), Debug.LogLevel.All);
                     return true;
                 }
                 else
                 {
-                    Debug.LogLine(String.Format("[ValidateDatHash] 00/01 dat hash mismatch:\n{0} (Found Hash) != {1} (Expected Hash)", datHash, hashOld), Debug.LogLevel.All);
+                    Debug.LogLine(string.Format("[ValidateDatHash] 00/01 dat hash mismatch:\n{0} (Found Hash) != {1} (Expected Hash)", datHash, hashOld), Debug.LogLevel.All);
                     return false;
                 }
             }
-            Debug.LogLine(String.Format("[ValidateDatHash] could not find snakebite.xml"), Debug.LogLevel.All);
+            Debug.LogLine(string.Format("[ValidateDatHash] could not find snakebite.xml"), Debug.LogLevel.All);
             return false;
         }
 
@@ -308,7 +310,7 @@ namespace SnakeBite
                 string installPath = Properties.Settings.Default.InstallPath;
                 if (Directory.Exists(installPath))
                 {
-                    if (File.Exists(String.Format("{0}\\MGSVTPP.exe", installPath)))
+                    if (File.Exists(string.Format("{0}\\MGSVTPP.exe", installPath)))
                     {
                         return true;
                     }
@@ -336,7 +338,7 @@ namespace SnakeBite
         public void SaveTo(string xmlFilePath)
         {
             // Write settings to XML
-            Directory.CreateDirectory(Path.GetDirectoryName(xmlFilePath));
+            _ = Directory.CreateDirectory(Path.GetDirectoryName(xmlFilePath));
             using (FileStream s = new FileStream(xmlFilePath, FileMode.Create))
             {
                 XmlSerializer x = new XmlSerializer(typeof(Settings), new[] { typeof(Settings) });
@@ -358,7 +360,7 @@ namespace SnakeBite
             {
                 return;
             }
-            
+
             using (FileStream s = new FileStream(xmlFilePath, FileMode.Open))
             {
                 XmlSerializer x = new XmlSerializer(typeof(Settings));
@@ -450,7 +452,10 @@ namespace SnakeBite
         {
             // Read mod metadata from xml
 
-            if (!File.Exists(Filename)) return;
+            if (!File.Exists(Filename))
+            {
+                return;
+            }
 
             XmlSerializer x = new XmlSerializer(typeof(ModEntry));
             StreamReader s = new StreamReader(Filename);
@@ -478,7 +483,10 @@ namespace SnakeBite
         {
             // Write mod metadata to XML
 
-            if (File.Exists(Filename)) File.Delete(Filename);
+            if (File.Exists(Filename))
+            {
+                File.Delete(Filename);
+            }
 
             XmlSerializer x = new XmlSerializer(typeof(ModEntry), new[] { typeof(ModEntry) });
             StreamWriter s = new StreamWriter(Filename);
@@ -506,7 +514,7 @@ namespace SnakeBite
         [XmlAttribute("Compressed")]
         public bool Compressed { get; set; }
 
-        //Added by makebite, currently unused
+        //Added by MakeBite, currently unused
         [XmlAttribute("ContentHash")]
         public string ContentHash { get; set; }
 
@@ -526,7 +534,7 @@ namespace SnakeBite
         [XmlAttribute("FilePath")]
         public string FilePath { get; set; }
 
-        //Added by makebite, currently unused
+        //Added by MakeBite, currently unused
         [XmlAttribute("ContentHash")]
         public string ContentHash { get; set; }
 
@@ -539,7 +547,8 @@ namespace SnakeBite
     }
 
     [XmlType("FileEntry")]
-    public class ModFileEntry {
+    public class ModFileEntry
+    {
         [XmlAttribute("FilePath")]
         public string FilePath { get; set; }
 

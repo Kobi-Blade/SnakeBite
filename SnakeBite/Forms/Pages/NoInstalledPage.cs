@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using System.Windows.Forms;
-using System.Diagnostics;
 
 namespace SnakeBite.ModPages
 {
@@ -20,7 +12,7 @@ namespace SnakeBite.ModPages
 
         private void linkLabelSnakeBiteModsList_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) // opens the [SBWM] search filter on nexus mods, randomly sorted.
         {
-            Process.Start(GamePaths.SBWMSearchURLPath);
+            _ = Process.Start(GamePaths.SBWMSearchURLPath);
         }
     }
 }

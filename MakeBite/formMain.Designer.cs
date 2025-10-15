@@ -1,4 +1,4 @@
-﻿namespace makebite
+﻿namespace MakeBite
 {
     partial class formMain
     {

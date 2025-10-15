@@ -100,26 +100,24 @@ public class SerialVersion
         Version = Ver;
     }
 
-    Version version = new Version();
+    private Version version = new Version();
 
     [XmlAttribute("Version")]
     public string Version
     {
-        get
-        {
-            return version.ToString();
-        }
+        get => version.ToString();
 
         set
         {
             try
             {
                 version = new Version(value);
-            } catch
+            }
+            catch
             {
                 version = new Version("0.0.0.0");
             }
-            
+
         }
     }
 

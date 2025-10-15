@@ -1,28 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SnakeBite.ModPages;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using SnakeBite.ModPages;
 
-namespace SnakeBite {
-    public class LogTextBoxWriter : TextWriter {
-        delegate void WriteCallbackChar(char text);
-        delegate void WriteCallbackString(string text);
+namespace SnakeBite
+{
+    public class LogTextBoxWriter : TextWriter
+    {
+        private delegate void WriteCallbackChar(char text);
+        private delegate void WriteCallbackString(string text);
 
         //private DateTime lastUpdate = new DateTime();
         //private int displayRate = 100;//ms
 
-        private LogPage logPage;
+        private readonly LogPage logPage;
 
-        public LogTextBoxWriter(LogPage logPage) {
+        public LogTextBoxWriter(LogPage logPage)
+        {
             this.logPage = logPage;
         }
 
-        public override void Write(char value) {                
-            logPage.logStringBuilder.Append(value);
+        public override void Write(char value)
+        {
+            _ = logPage.logStringBuilder.Append(value);
             logPage.UpdateLog();
 
             /*
@@ -36,8 +35,9 @@ namespace SnakeBite {
             */
         }
 
-        public override void Write(string value) {
-            logPage.logStringBuilder.Append(value);
+        public override void Write(string value)
+        {
+            _ = logPage.logStringBuilder.Append(value);
             logPage.UpdateLog();
 
             /*
@@ -51,8 +51,6 @@ namespace SnakeBite {
             */
         }
 
-        public override Encoding Encoding {
-            get { return Encoding.ASCII; }
-        }
+        public override Encoding Encoding => Encoding.ASCII;
     }
 }

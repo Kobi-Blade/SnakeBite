@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ICSharpCode.SharpZipLib.Zip;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -7,7 +8,6 @@ using System.IO;
 using System.Media;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using ICSharpCode.SharpZipLib.Zip;
 using System.Xml.Serialization;
 
 namespace SnakeBite
@@ -22,7 +22,7 @@ namespace SnakeBite
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
 
 
-        private CultureInfo cultureInfo = System.Threading.Thread.CurrentThread.CurrentCulture;
+        private readonly CultureInfo cultureInfo = System.Threading.Thread.CurrentThread.CurrentCulture;
         private TextInfo textInfo;
 
         private Color baseColour;
@@ -30,11 +30,11 @@ namespace SnakeBite
         private Color exitColour;
         private SoundPlayer playerMove;
         private SoundPlayer playerSelect;
-        
+
 
         public formLauncher()
         {
-            
+
             InitializeComponent();
         }
 
@@ -43,13 +43,13 @@ namespace SnakeBite
             textInfo = cultureInfo.TextInfo;
 
             // Retrieve and display version info
-            var MGSVersionInfo = FileVersionInfo.GetVersionInfo(Properties.Settings.Default.InstallPath + "\\mgsvtpp.exe");
+            FileVersionInfo MGSVersionInfo = FileVersionInfo.GetVersionInfo(Properties.Settings.Default.InstallPath + "\\mgsvtpp.exe");
 
             string SBVersion = Application.ProductVersion;
             string MGSVersion = MGSVersionInfo.ProductVersion;
 
             // Update version text
-            string VersionText = String.Format("MGSV {0} / SB {1}", MGSVersion, SBVersion);
+            string VersionText = string.Format("MGSV {0} / SB {1}", MGSVersion, SBVersion);
             labelVersion.Text = VersionText;
             UpdateVersionLabel();
 
@@ -61,8 +61,10 @@ namespace SnakeBite
             Opacity = 0;
             int duration = 100;//in milliseconds
             int steps = 30;
-            Timer timer = new Timer();
-            timer.Interval = duration / steps;
+            Timer timer = new Timer
+            {
+                Interval = duration / steps
+            };
 
             int currentStep = 0;
             timer.Tick += (arg1, arg2) =>
@@ -90,31 +92,31 @@ namespace SnakeBite
                 try
                 {
                     ZipFile themeFile = new ZipFile(Properties.Settings.Default.ThemeFile);
-                    var themeEntry = themeFile.FindEntry("Theme.xml", true);
+                    int themeEntry = themeFile.FindEntry("Theme.xml", true);
                     if (themeEntry >= 0)
                     {
-                        var themeStream = themeFile.GetInputStream(themeFile[themeEntry]);
+                        Stream themeStream = themeFile.GetInputStream(themeFile[themeEntry]);
                         using (StreamReader themeReader = new StreamReader(themeStream))
                         {
                             XmlSerializer themeSerializer = new XmlSerializer(typeof(ThemeXml.Theme));
-                            var theme = (ThemeXml.Theme)themeSerializer.Deserialize(themeReader);
+                            ThemeXml.Theme theme = (ThemeXml.Theme)themeSerializer.Deserialize(themeReader);
                             baseColour = Color.FromArgb(theme.BaseColour.alpha, theme.BaseColour.red, theme.BaseColour.green, theme.BaseColour.blue);
                             hoverColour = Color.FromArgb(theme.HoverColour.alpha, theme.HoverColour.red, theme.HoverColour.green, theme.HoverColour.blue);
                             exitColour = Color.FromArgb(theme.ExitColour.alpha, theme.ExitColour.red, theme.ExitColour.green, theme.ExitColour.blue);
                         }
                     }
-                    var bgEntry = themeFile.FindEntry("LAUNCHERBGv2.png", true);
+                    int bgEntry = themeFile.FindEntry("LAUNCHERBGv2.png", true);
                     if (bgEntry >= 0)
                     {
                         BackgroundImage = Image.FromStream(themeFile.GetInputStream(themeFile[bgEntry]));
                     }
                     // TODO: implemenmt theme sound effects
-                    var soundMoveEntry = themeFile.FindEntry("ui_move.wav", true);
-                    if(soundMoveEntry >= 0)
+                    int soundMoveEntry = themeFile.FindEntry("ui_move.wav", true);
+                    if (soundMoveEntry >= 0)
                     {
                         playerMove = new SoundPlayer(themeFile.GetInputStream(themeFile[soundMoveEntry]));
                     }
-                    var soundSelectEntry = themeFile.FindEntry("ui_select.wav", true);
+                    int soundSelectEntry = themeFile.FindEntry("ui_select.wav", true);
                     if (soundSelectEntry >= 0)
                     {
                         playerSelect = new SoundPlayer(themeFile.GetInputStream(themeFile[soundSelectEntry]));
@@ -124,7 +126,8 @@ namespace SnakeBite
                 {
 
                 }
-            } else
+            }
+            else
             {
                 // Setup default theme
                 BackgroundImage = Properties.Resources.LAUNCHERBGv2;
@@ -175,12 +178,15 @@ namespace SnakeBite
 
         private void PlaySound(string SoundName)
         {
-            if (!Properties.Settings.Default.EnableSound) return;
+            if (!Properties.Settings.Default.EnableSound)
+            {
+                return;
+            }
 
             BackgroundWorker soundWorker = new BackgroundWorker();
             soundWorker.DoWork += (obj, var) =>
             {
-                switch(SoundName)
+                switch (SoundName)
                 {
                     case "ui_move":
                         playerMove.Play();
@@ -194,7 +200,7 @@ namespace SnakeBite
                         snd.Play();
                         break;
                 }
-                
+
                 System.Threading.Thread.Sleep(200);
                 soundWorker.Dispose();
             };
@@ -206,13 +212,15 @@ namespace SnakeBite
             SettingsManager manager = new SettingsManager(GamePaths.SnakeBiteSettings);
             if (manager.ValidInstallPath)
             {
-                Process.Start(GamePaths.GameDir + "\\mgsvtpp.exe");
+                _ = Process.Start(GamePaths.GameDir + "\\mgsvtpp.exe");
                 if (Properties.Settings.Default.CloseSnakeBiteOnLaunch)
+                {
                     ExitLauncher(silent);
+                }
             }
             else
             {
-                MessageBox.Show("Unable to locate MGSVTPP.exe. Please check the Settings and try again.", "Error launching MGSV", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _ = MessageBox.Show("Unable to locate MGSVTPP.exe. Please check the Settings and try again.", "Error launching MGSV", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -220,21 +228,27 @@ namespace SnakeBite
         {
             PlaySound("ui_select");
             formMods Mods = new formMods();
-            Mods.ShowDialog();
+            _ = Mods.ShowDialog();
         }
 
         private void ShowConfiguration()
         {
             PlaySound("ui_select");
-            formSettings Settings = new formSettings();
-            Settings.Owner = this;
-            Settings.ShowDialog();
+            formSettings Settings = new formSettings
+            {
+                Owner = this
+            };
+            _ = Settings.ShowDialog();
             buttonMods.Enabled = !BackupManager.ModsDisabled();
         }
 
         private void ExitLauncher(bool silent = false)
         {
-            if (!silent) PlaySound("ui_select");
+            if (!silent)
+            {
+                PlaySound("ui_select");
+            }
+
             Hide();
             System.Threading.Thread.Sleep(200);
             Close();
@@ -264,11 +278,11 @@ namespace SnakeBite
         {
             try
             {
-                Process.Start(GamePaths.SBInstallDir);
+                _ = Process.Start(GamePaths.SBInstallDir);
             }
             catch
             {
-                Debug.LogLine(String.Format("Failed to open SnakeBite Installation Directory"), Debug.LogLevel.Basic);
+                Debug.LogLine(string.Format("Failed to open SnakeBite Installation Directory"), Debug.LogLevel.Basic);
             }
         }
 
@@ -279,9 +293,9 @@ namespace SnakeBite
 
         private void UpdateVersionLabel()
         {
-           labelVersion.Refresh();
-           labelVersion.Left = 8;
-           labelVersion.Top = Height - labelVersion.Height - 8;
+            labelVersion.Refresh();
+            labelVersion.Left = 8;
+            labelVersion.Top = Height - labelVersion.Height - 8;
         }
 
         private void labelClose_Click(object sender, EventArgs e)
@@ -293,8 +307,8 @@ namespace SnakeBite
         {
             if (e.Button == MouseButtons.Left)
             {
-                ReleaseCapture();
-                SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+                _ = ReleaseCapture();
+                _ = SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
             }
         }
 
