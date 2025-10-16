@@ -1,103 +1,33 @@
-# SnakeBite
-SnakeBite is a mod manager/launcher for Metal Gear Solid V (PC/Steam).
-Releases at Nexusmods: https://www.nexusmods.com/metalgearsolidvtpp/mods/106
-Current fork at: https://github.com/TinManTex/SnakeBite
+# SnakeBite Mod Manager
+SnakeBite is a mod manager and launcher for Metal Gear Solid V: The Phantom Pain (PC/Steam). This detached fork introduces critical updates and refactors to improve stability, security, and maintainability.
 
-## Getting started with SnakeBite
-Before running makebite make sure the 00.dat and 01.dat in MGSV_TPP\master\0 are unmodified.
-Use the validate game cache option via steam if nessesary.
+## 🔧 About This Fork
+This version includes:
 
-When you first run the application, you will be greeted by the setup wizard. This will walk you through the steps required to run SnakeBite.
+- Refactored code for improved readability and maintainability
+- Updated framework dependencies and package bindings
+- Patches for high security vulnerabilities present in the TinManTex fork
+- While this fork modernizes key aspects of the codebase, it requires a full rewrite in .NET to meet modern development standards, but that is currently outside the scope of this project.
 
-During the setup process you will be prompted to
+## 🚀 Getting Started
+Before running MakeBite, ensure that the `00.dat` and `01.dat` files in MGSV_TPP\master\0 are unmodified. Use Steam “Verify integrity of games files” option if needed.
 
-1. Select your MGSV installation directory
-2. Create a backup of the game data
-3. Modify game data to prepare for modding
- 
-Some of the game data needs to be modified to allow for easier installation of mods. During setup, any MGSV system data contained in 00.dat will be moved into 01.dat. Afterwards, any files installed by SnakeBite can be installed into 00.dat with minimal risk of conflicting with the game files.
+Upon launching SnakeBite, the setup wizard will guide you through:
 
-## Mods and Mod Files
-Mods can be installed and uninstalled by selecting **MODS** from the main window. Additionally, you can temporarily disable/enable all mods by clicking the toggle switch next to **MODS**.
+1. Selecting your MGSV installation directory
+2. Creating a backup of game data (optional)
+3. Preparing game data for modding
 
-If the mod you wish to install is available as a .MGSV file, it is the recommended way to install mods using SnakeBite. If not, SnakeBite provides basic functionality to install unsupported mods.
+## 📦 Installing Mods
 
-### If your mod is a **.MGSV**:
+- Mods can be installed/uninstalled via the `Mods` tab.
+- Presets allow you to save and restore mod configurations.
 
-Click "Install .MGSV" from the mod manager window and select the mod you wish to install.
+## 🛠 Troubleshooting
 
-## Mod Preset Files
-A 'Mod Preset' is a collection of mods which can be saved and loaded with SnakeBite. Saving a Preset will pack your current modded game data into a .MGSVPreset file. Loading a Preset will simply replace your game data with the files stored in the .MGSVPreset file. Presets are a fast and simple method of organizing your favorite mods or trying new mod combinations. You can also utilize Presets as restore checkpoints if SnakeBite encounters a serious error or your game data becomes corrupted. 
+- **Do not** run SnakeBite as administrator.
+- Verify integrity of game files via Steam if mod conflicts arise.
+- Check `Log.txt` in the Log directory for error messages.
 
-By default, SnakeBite creates 'RevertChanges.MGSVPreset' before a mod installation/uninstallation, so you can easily undo an action if it caused a critical error. However, saving a large number of mods needs a bit of time and storage space, so you can choose to skip this option by unchecking the 'Save RevertChanges.MGSVPreset' checkbox in the Settings menu. RevertChanges.MGSVPreset is saved to your Game Directory.
-
-# Troubleshooting
-For those with issues with Snakebite try:
-
-Do not use the Install .ZIP option, instead extract the mods .mgsv file that's in the mods .zip and use Install .MGSV
-
-Installing Microsoft .Net 4.6.1:
-https://www.microsoft.com/en-us/download/details.aspx?id=49981
-
-If you have a warning about permissions try right clicking Snakebites shortcut and choosing Run as administrator
-Or try reinstalling Snakebite to a different folder than it's default.
-
-When using the revalidate option it will likely pop up the steam process in the background, make sure you wait till it's finished.
-
-To manually revalidate the files through steam:
-Right click on Metal Gear Solid V in Steam
-Choose properties from the right click menu
-Click the Local Files tab
-Click Verify Integrity of Game Cache.
-Wait till it says it's complete.
-
-If you get "The selected mod conflicts with existing MGSV system files" warning then snakebite has likely messed up it's data xml and added mod files to it's default files list.
-The only solution is to hit Restore Original Game Files in the snakebite settings. Verify MGSVs game cache (through steam, not snakebite) to make sure everything is default and try again.
-While the disable compatability check setting will bypass this, it is likely to cause problems with the game.
-
-Snakebite prints information to Log.txt in its install folder.
-Check this before you close snakebite (since it's cleared on next snakebite start) to see if there's any error messages. 
-
-# Mod Developers
-
-Use MakeBite (included) to create .MGSV mod files compatible with SnakeBite
-
-For information regarding using makebite to create mod files, please see here: https://github.com/topher-au/SnakeBite/wiki/Using-MakeBite
-
-In addition to this, files inside a folder named GameDir will be installed to the MGS_TPP folder.
-
-# Command-line args
-Makebite just takes the input path (that you'd normally browse to) and outputs mod.mgsv there.
-This means makebite will create a mgsv by drag-and-drop a valid folder onto makebite.exe or using shortcut in windows send-to menu.
-Makebite will fill the info from a metadata.xml in the input folder (previously generated by the usual makebite ui).
-Also you can throw a readme.txt in the input folder and it will overwrite the metadata description.
-
-Snakebites args:
-
--completeuninstall
-(as the only arg)
-Same as settings > Restore original game files button.
-
--i <path to .mgsv file>
-install - the -i can be ommitted, path can also be a folder of .mgsvs, and any other paths passed in as args will also be processed.
-This means you can install by drag-and-drop onto snakebite.exe or using shortcut in windows send-to menu.
-
--u <name of mod>
-uninstall an installed mod (name matching the Name field in makebite/metadata.xml/the snakebite installed mods list.
-
--c
-bypass conflict checks, I think necessary because makebite doesn't use the snakebite version value from metadata.xml when building from command line.
-
--x
-close snakebite when done
-
--d
-resets snakebites dat hash, snakebite uses this to detect if the 00.dat has changed, and usually throws up ui saying it's doing so, this option just silently does it.
-this was to smooth over my 'build tool' process - which basically just copies over stuff from my project folder then runs makebite/snakebite by command line - rather than wait for uninstall of previous version it copies over a 'snakebite clean' 00.dat/ie the 2kb snakebite installed but nothing else 00.dat, then runs snakebite with -i -d -c -x
-
-# Found a bug?
-
-Please submit a bug report to GitHub with as much detail as possible. Please include log.txt, which is accessed by double clicking the version in the main window, or found in your SnakeBite install directory (default %LocalAppData%\SnakeBite). Warning: the logfile is reset every time you launch SnakeBite so please save it immediately after the application crashes.
-
-# Snakebite Developers
-See Developers.txt
+## 🧪 Developers
+Use MakeBite to create .MGSV mod files.
