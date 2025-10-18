@@ -1,25 +1,11 @@
 ﻿using System;
 using System.Windows.Forms;
 
-// ------------------------------------------------------------------
-// Wraps System.Windows.Forms.OpenFileDialog to make it present
-// a vista-style dialog.
-// ------------------------------------------------------------------
-
 namespace FolderSelect
 {
-    /// <summary>
-    /// Wraps System.Windows.Forms.OpenFileDialog to make it present
-    /// a vista-style dialog.
-    /// </summary>
     public class FolderSelectDialog
     {
-        // Wrapped dialog
         private readonly System.Windows.Forms.OpenFileDialog ofd = null;
-
-        /// <summary>
-        /// Default constructor
-        /// </summary>
         public FolderSelectDialog()
         {
             ofd = new System.Windows.Forms.OpenFileDialog
@@ -33,44 +19,23 @@ namespace FolderSelect
         }
 
         #region Properties
-
-        /// <summary>
-        /// Gets/Sets the initial folder to be selected. A null value selects the current directory.
-        /// </summary>
         public string InitialDirectory
-        { get => ofd.InitialDirectory; set => ofd.InitialDirectory = value == null || value.Length == 0 ? Environment.CurrentDirectory : value;
+        {
+            get => ofd.InitialDirectory; set => ofd.InitialDirectory = value == null || value.Length == 0 ? Environment.CurrentDirectory : value;
         }
-
-        /// <summary>
-        /// Gets/Sets the title to show in the dialog
-        /// </summary>
         public string Title
-        { get => ofd.Title; set => ofd.Title = value ?? "Select a folder";
+        {
+            get => ofd.Title; set => ofd.Title = value ?? "Select a folder";
         }
-
-        /// <summary>
-        /// Gets the selected folder
-        /// </summary>
         public string FileName => ofd.FileName;
 
         #endregion Properties
 
         #region Methods
-
-        /// <summary>
-        /// Shows the dialog
-        /// </summary>
-        /// <returns>True if the user presses OK else false</returns>
         public bool ShowDialog()
         {
             return ShowDialog(IntPtr.Zero);
         }
-
-        /// <summary>
-        /// Shows the dialog
-        /// </summary>
-        /// <param name="hWndOwner">Handle of the control to be parent</param>
-        /// <returns>True if the user presses OK else false</returns>
         public bool ShowDialog(IntPtr hWndOwner)
         {
             bool flag = false;
@@ -82,15 +47,15 @@ namespace FolderSelect
                 uint num = 0;
                 Type typeIFileDialog = r.GetType("FileDialogNative.IFileDialog");
                 object dialog = r.Call(ofd, "CreateVistaDialog");
-                _ = r.Call(ofd, "OnBeforeVistaDialog", dialog);
+                r.Call(ofd, "OnBeforeVistaDialog", dialog);
 
                 uint options = (uint)r.CallAs(typeof(System.Windows.Forms.FileDialog), ofd, "GetOptions");
                 options |= (uint)r.GetEnum("FileDialogNative.FOS", "FOS_PICKFOLDERS");
-                _ = r.CallAs(typeIFileDialog, dialog, "SetOptions", options);
+                r.CallAs(typeIFileDialog, dialog, "SetOptions", options);
 
                 object pfde = r.New("FileDialog.VistaDialogEvents", ofd);
                 object[] parameters = new object[] { pfde, num };
-                _ = r.CallAs2(typeIFileDialog, dialog, "Advise", parameters);
+                r.CallAs2(typeIFileDialog, dialog, "Advise", parameters);
                 num = (uint)parameters[1];
                 try
                 {
@@ -99,7 +64,7 @@ namespace FolderSelect
                 }
                 finally
                 {
-                    _ = r.CallAs(typeIFileDialog, dialog, "Unadvise", num);
+                    r.CallAs(typeIFileDialog, dialog, "Unadvise", num);
                     GC.KeepAlive(pfde);
                 }
             }
@@ -125,24 +90,12 @@ namespace FolderSelect
 
         #endregion Methods
     }
-
-    /// <summary>
-    /// Creates IWin32Window around an IntPtr
-    /// </summary>
     public class WindowWrapper : System.Windows.Forms.IWin32Window
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="handle">Handle to wrap</param>
         public WindowWrapper(IntPtr handle)
         {
             Handle = handle;
         }
-
-        /// <summary>
-        /// Original ptr
-        /// </summary>
         public IntPtr Handle { get; }
     }
 }

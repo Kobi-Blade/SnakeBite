@@ -85,7 +85,7 @@ namespace SnakeBite.QuickMod
                     }
                     if (cm.checkExport.Checked)
                     {
-                        _ = MessageBox.Show("Successfully exported MGSV file", "Quick Install", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Successfully exported MGSV file", "Quick Install", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
                     {
@@ -102,7 +102,7 @@ namespace SnakeBite.QuickMod
             {
                 OutputFile
             };
-            ProgressWindow.Show("Installing Mod", string.Format("Installing {0}, please wait...", cm.textModName.Text), new Action((MethodInvoker)delegate { _ = InstallManager.InstallMods(InstallFileList); }), log);
+            ProgressWindow.Show("Installing Mod", string.Format("Installing {0}, please wait...", cm.textModName.Text), new Action((MethodInvoker)delegate { InstallManager.InstallMods(InstallFileList); }), log);
         }
 
         private void buttonNext_Click(object sender, EventArgs e)

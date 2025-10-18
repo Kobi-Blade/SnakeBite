@@ -20,7 +20,7 @@ namespace SnakeBite
             if (textbox.InvokeRequired)
             {
                 WriteCallbackChar d = new WriteCallbackChar(Write);
-                _ = textbox.Invoke(d, new object[] { value });
+                textbox.Invoke(d, new object[] { value });
             }
             else
             {
@@ -33,7 +33,7 @@ namespace SnakeBite
             if (textbox.InvokeRequired)
             {
                 WriteCallbackString d = new WriteCallbackString(Write);
-                _ = textbox.Invoke(d, new object[] { value });
+                textbox.Invoke(d, new object[] { value });
             }
             else
             {

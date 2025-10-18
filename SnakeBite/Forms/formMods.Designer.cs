@@ -2,15 +2,7 @@
 {
     partial class formMods
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -21,11 +13,6 @@
         }
 
         #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
@@ -68,9 +55,6 @@
             this.panelModList = new System.Windows.Forms.Panel();
             this.panelModList.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // listInstalledMods
-            // 
             this.listInstalledMods.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -86,9 +70,6 @@
             this.listInstalledMods.Tag = "";
             this.listInstalledMods.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.listInstalledMods_ItemCheck);
             this.listInstalledMods.SelectedIndexChanged += new System.EventHandler(this.listInstalledMods_SelectedIndexChanged);
-            // 
-            // buttonInstall
-            // 
             this.buttonInstall.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonInstall.BackColor = System.Drawing.Color.Transparent;
@@ -100,9 +81,6 @@
             this.buttonInstall.Text = "Install .MGSV File(s)";
             this.buttonInstall.UseVisualStyleBackColor = false;
             this.buttonInstall.Click += new System.EventHandler(this.buttonInstall_Click);
-            // 
-            // buttonUninstall
-            // 
             this.buttonUninstall.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonUninstall.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -114,9 +92,6 @@
             this.buttonUninstall.Text = "Uninstall Checked Mod(s)";
             this.buttonUninstall.UseVisualStyleBackColor = true;
             this.buttonUninstall.Click += new System.EventHandler(this.buttonUninstall_Click);
-            // 
-            // labelInstalledMods
-            // 
             this.labelInstalledMods.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelInstalledMods.BackColor = System.Drawing.Color.Silver;
@@ -129,9 +104,6 @@
             this.labelInstalledMods.TabIndex = 6;
             this.labelInstalledMods.Text = "Installed Mods";
             this.labelInstalledMods.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // checkBoxMarkAll
-            // 
             this.checkBoxMarkAll.AutoSize = true;
             this.checkBoxMarkAll.BackColor = System.Drawing.Color.Transparent;
             this.checkBoxMarkAll.Checked = true;
@@ -142,9 +114,6 @@
             this.checkBoxMarkAll.TabIndex = 7;
             this.checkBoxMarkAll.UseVisualStyleBackColor = false;
             this.checkBoxMarkAll.Click += new System.EventHandler(this.checkBoxMarkAll_Click);
-            // 
-            // panelContent
-            // 
             this.panelContent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.panelContent.BackColor = System.Drawing.Color.Transparent;
             this.panelContent.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -152,9 +121,6 @@
             this.panelContent.Name = "panelContent";
             this.panelContent.Size = new System.Drawing.Size(420, 403);
             this.panelContent.TabIndex = 10;
-            // 
-            // buttonLaunchGame
-            // 
             this.buttonLaunchGame.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonLaunchGame.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonLaunchGame.Location = new System.Drawing.Point(432, 415);
@@ -164,16 +130,10 @@
             this.buttonLaunchGame.Text = "Launch Game";
             this.buttonLaunchGame.UseVisualStyleBackColor = true;
             this.buttonLaunchGame.Click += new System.EventHandler(this.buttonLaunchGame_Click);
-            // 
-            // mainMenuMods
-            // 
             this.mainMenuMods.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuItemFile,
             this.menuItemOptions,
             this.menuItemHelp});
-            // 
-            // menuItemFile
-            // 
             this.menuItemFile.Index = 0;
             this.menuItemFile.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuItemOpenDir,
@@ -186,86 +146,44 @@
             this.menuItem4,
             this.menuItemExit});
             this.menuItemFile.Text = "File";
-            // 
-            // menuItemOpenDir
-            // 
             this.menuItemOpenDir.Index = 0;
             this.menuItemOpenDir.Text = "Open Game Directory";
             this.menuItemOpenDir.Click += new System.EventHandler(this.menuItemOpenDir_Click);
-            // 
-            // menuItemOpenMakeBite
-            // 
             this.menuItemOpenMakeBite.Index = 1;
             this.menuItemOpenMakeBite.Text = "Launch MakeBite";
             this.menuItemOpenMakeBite.Click += new System.EventHandler(this.menuItemOpenMakeBite_Click);
-            // 
-            // menuItem6
-            // 
             this.menuItem6.Index = 2;
             this.menuItem6.Text = "-";
-            // 
-            // menuItemBrowseMods
-            // 
             this.menuItemBrowseMods.Index = 3;
             this.menuItemBrowseMods.Text = "Browse SnakeBite Mods";
             this.menuItemBrowseMods.Click += new System.EventHandler(this.menuItemBrowseMods_Click);
-            // 
-            // menuItem8
-            // 
             this.menuItem8.Index = 4;
             this.menuItem8.Text = "-";
-            // 
-            // menuItemSavePreset
-            // 
             this.menuItemSavePreset.Index = 5;
             this.menuItemSavePreset.Text = "Save .MGSVPreset File...";
             this.menuItemSavePreset.Click += new System.EventHandler(this.menuItemSavePreset_Click);
-            // 
-            // menuItemLoadPreset
-            // 
             this.menuItemLoadPreset.Index = 6;
             this.menuItemLoadPreset.Text = "Load .MGSVPreset File...";
             this.menuItemLoadPreset.Click += new System.EventHandler(this.menuItemLoadPreset_Click);
-            // 
-            // menuItem4
-            // 
             this.menuItem4.Index = 7;
             this.menuItem4.Text = "-";
-            // 
-            // menuItemExit
-            // 
             this.menuItemExit.Index = 8;
             this.menuItemExit.Text = "Exit";
             this.menuItemExit.Click += new System.EventHandler(this.menuItemExit_Click);
-            // 
-            // menuItemOptions
-            // 
             this.menuItemOptions.Index = 1;
             this.menuItemOptions.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuItemSkipLauncher,
             this.menuItem11,
             this.menuItemOpenSettings});
             this.menuItemOptions.Text = "Options";
-            // 
-            // menuItemSkipLauncher
-            // 
             this.menuItemSkipLauncher.Index = 0;
             this.menuItemSkipLauncher.Text = "Skip Startup Launcher";
             this.menuItemSkipLauncher.Click += new System.EventHandler(this.menuItemSkipLauncher_Click);
-            // 
-            // menuItem11
-            // 
             this.menuItem11.Index = 1;
             this.menuItem11.Text = "-";
-            // 
-            // menuItemOpenSettings
-            // 
             this.menuItemOpenSettings.Index = 2;
             this.menuItemOpenSettings.Text = "Settings...";
             this.menuItemOpenSettings.Click += new System.EventHandler(this.menuItemOpenSettings_Click);
-            // 
-            // menuItemHelp
-            // 
             this.menuItemHelp.Index = 2;
             this.menuItemHelp.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuItemLearn,
@@ -275,9 +193,6 @@
             this.menuItem1,
             this.menuItemOpenBugReport});
             this.menuItemHelp.Text = "Help";
-            // 
-            // menuItemLearn
-            // 
             this.menuItemLearn.Index = 0;
             this.menuItemLearn.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuItemInstalling,
@@ -287,72 +202,36 @@
             this.menuItemCreating,
             this.menuItemHelpPresets});
             this.menuItemLearn.Text = "About SnakeBite...";
-            // 
-            // menuItemInstalling
-            // 
             this.menuItemInstalling.Index = 0;
             this.menuItemInstalling.Text = "Installing Mods";
             this.menuItemInstalling.Click += new System.EventHandler(this.menuItemHelpInstall_Click);
-            // 
-            // menuItemUninstalling
-            // 
             this.menuItemUninstalling.Index = 1;
             this.menuItemUninstalling.Text = "Uninstalling Mods";
             this.menuItemUninstalling.Click += new System.EventHandler(this.menuItemHelpUninstall_Click);
-            // 
-            // menuItemConflicts
-            // 
             this.menuItemConflicts.Index = 2;
             this.menuItemConflicts.Text = "Mod Conflicts";
             this.menuItemConflicts.Click += new System.EventHandler(this.menuItemHelpConflicts_Click);
-            // 
-            // menuItem3
-            // 
             this.menuItem3.Index = 3;
             this.menuItem3.Text = "-";
-            // 
-            // menuItemCreating
-            // 
             this.menuItemCreating.Index = 4;
             this.menuItemCreating.Text = "Creating Mods";
             this.menuItemCreating.Click += new System.EventHandler(this.menuItemHelpCreate_Click);
-            // 
-            // menuItemHelpPresets
-            // 
             this.menuItemHelpPresets.Index = 5;
             this.menuItemHelpPresets.Text = "Saving/Loading Presets";
             this.menuItemHelpPresets.Click += new System.EventHandler(this.menuItemHelpPresets_Click);
-            // 
-            // menuItemWikiLink
-            // 
             this.menuItemWikiLink.Index = 1;
             this.menuItemWikiLink.Text = "Visit Modding Wiki";
             this.menuItemWikiLink.Click += new System.EventHandler(this.menuItemWikiLink_Click);
-            // 
-            // menuItem18
-            // 
             this.menuItem18.Index = 2;
             this.menuItem18.Text = "-";
-            // 
-            // menuItemOpenLogs
-            // 
             this.menuItemOpenLogs.Index = 3;
             this.menuItemOpenLogs.Text = "Open Debug Logs";
             this.menuItemOpenLogs.Click += new System.EventHandler(this.menuItemOpenLogs_Click);
-            // 
-            // menuItem1
-            // 
             this.menuItem1.Index = 4;
             this.menuItem1.Text = "-";
-            // 
-            // menuItemOpenBugReport
-            // 
             this.menuItemOpenBugReport.Index = 5;
             this.menuItemOpenBugReport.Text = "Report a Bug";
             this.menuItemOpenBugReport.Click += new System.EventHandler(this.menuItemOpenBugReport_Click);
-            // 
-            // panelModList
-            // 
             this.panelModList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.panelModList.BackColor = System.Drawing.Color.Transparent;
@@ -365,9 +244,6 @@
             this.panelModList.Name = "panelModList";
             this.panelModList.Size = new System.Drawing.Size(191, 455);
             this.panelModList.TabIndex = 12;
-            // 
-            // formMods
-            // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(621, 476);

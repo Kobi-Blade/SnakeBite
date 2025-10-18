@@ -349,7 +349,7 @@
     <Content Include="qar_dictionary.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SnakeBite.ico" />
+    <Content Include="Resources\SnakeBite.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

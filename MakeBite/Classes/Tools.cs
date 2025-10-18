@@ -157,7 +157,6 @@ namespace SnakeBite
             "vo.evf",
             "vpc",
             "wem",
-            //"xml"
         };
 
         public static ModEntry ReadMetaData(string ModFile)
@@ -215,7 +214,7 @@ namespace SnakeBite
 
             for (int i = 0; i < hashBytes.Length; i++)
             {
-                _ = hashBuilder.Append(hashBytes[i].ToString("X2"));
+                hashBuilder.Append(hashBytes[i].ToString("X2"));
             }
 
             return hashBuilder.ToString();
@@ -223,22 +222,16 @@ namespace SnakeBite
 
         internal static ulong NameToHash(string FileName)
         {
-            // regenerate hash for file
             string filePath = Tools.ToQarPath(FileName);
             ulong hash = Hashing.HashFileNameWithExtension(filePath);
-            // find hashed names, which will be in root
             if (!filePath.Substring(1).Contains("/"))
             {
-                // try to parse hash from filename
                 string fileName = filePath.TrimStart('/');
                 string fileNoExt = fileName.Substring(0, fileName.IndexOf("."));
                 string fileExt = fileName.Substring(fileName.IndexOf(".") + 1);
-                //tex NMC aparently cant use HashFileNameWithExtension with undictionaried/files with hash names
-                // tryParseHash will fail for non hashed files in root (currently only init.lua and foxpatch.dat)
                 bool tryParseHash = ulong.TryParse(fileNoExt, System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.CurrentCulture, out hash);
-                if (tryParseHash) // successfully parsed filename
+                if (tryParseHash)
                 {
-                    //TODO: create Hashing.HashFileExtension
                     ulong ExtHash = Hashing.HashFileName(fileExt, false) & 0x1FFF;
                     hash = (ExtHash << 51) | hash;
                 }
@@ -252,7 +245,6 @@ namespace SnakeBite
 
         internal static bool CompareNames(string File1, string File2)
         {
-            // TODO: change name comparison to use function
             return Tools.ToQarPath(File1) == Tools.ToQarPath(File2);
         }
 
@@ -269,21 +261,15 @@ namespace SnakeBite
 
         public static void DeleteDirectory(string target_dir)
         {
-            //Debug.LogLine("[Cleanup Debug] Removing " + target_dir);
             foreach (string file in Directory.EnumerateFiles(target_dir))
             {
-                //Debug.LogLine("[Cleanup Debug] Setting FileAttributes for " + file);
                 File.SetAttributes(file, FileAttributes.Normal);
-                //Debug.LogLine("[Cleanup Debug] Deleting " + file);
                 File.Delete(file);
             }
             foreach (string dir in Directory.EnumerateDirectories(target_dir))
             {
-                //Debug.LogLine("[Cleanup Debug] Deleting " + dir);
                 DeleteDirectory(dir);
             }
-
-            //Debug.LogLine("[Cleanup Debug] Deleting " + target_dir);
             DirectoryInfo target = new DirectoryInfo(target_dir);
             if (target.GetFiles().Length == 0)
             {
@@ -298,26 +284,20 @@ namespace SnakeBite
 
         public static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
         {
-            // Get the subdirectories for the specified directory.
             DirectoryInfo dir = new DirectoryInfo(sourceDirName);
             if (dir.Exists)
             {
                 DirectoryInfo[] dirs = dir.GetDirectories();
-                // If the destination directory doesn't exist, create it.
                 if (!Directory.Exists(destDirName))
                 {
-                    _ = Directory.CreateDirectory(destDirName);
+                    Directory.CreateDirectory(destDirName);
                 }
-
-                // Get the files in the directory and copy them to the new location.
                 FileInfo[] files = dir.GetFiles();
                 foreach (FileInfo file in files)
                 {
                     string temppath = Path.Combine(destDirName, file.Name);
-                    _ = file.CopyTo(temppath, true);
+                    file.CopyTo(temppath, true);
                 }
-
-                // If copying subdirectories, copy them and their contents to new location.
                 if (copySubDirs)
                 {
                     foreach (DirectoryInfo subdir in dirs)

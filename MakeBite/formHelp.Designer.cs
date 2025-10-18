@@ -2,15 +2,7 @@
 {
     partial class formHelp
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -21,11 +13,6 @@
         }
 
         #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formHelp));
@@ -38,9 +25,6 @@
             this.labelAssetDirNote = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // groupBox1
-            // 
             this.groupBox1.Controls.Add(this.listBox3);
             this.groupBox1.Controls.Add(this.listBox2);
             this.groupBox1.Controls.Add(this.listBox1);
@@ -52,9 +36,6 @@
             this.groupBox1.Size = new System.Drawing.Size(499, 460);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            // 
-            // listBox3
-            // 
             this.listBox3.BackColor = System.Drawing.Color.Silver;
             this.listBox3.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.listBox3.FormattingEnabled = true;
@@ -68,9 +49,6 @@
             this.listBox3.Name = "listBox3";
             this.listBox3.Size = new System.Drawing.Size(481, 79);
             this.listBox3.TabIndex = 5;
-            // 
-            // listBox2
-            // 
             this.listBox2.BackColor = System.Drawing.Color.Silver;
             this.listBox2.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.listBox2.FormattingEnabled = true;
@@ -86,9 +64,6 @@
             this.listBox2.Name = "listBox2";
             this.listBox2.Size = new System.Drawing.Size(481, 109);
             this.listBox2.TabIndex = 4;
-            // 
-            // listBox1
-            // 
             this.listBox1.BackColor = System.Drawing.Color.Silver;
             this.listBox1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.listBox1.FormattingEnabled = true;
@@ -105,9 +80,6 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(481, 109);
             this.listBox1.TabIndex = 3;
-            // 
-            // labelLooseTextureNote
-            // 
             this.labelLooseTextureNote.AutoSize = true;
             this.labelLooseTextureNote.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelLooseTextureNote.ForeColor = System.Drawing.Color.Black;
@@ -116,9 +88,6 @@
             this.labelLooseTextureNote.Size = new System.Drawing.Size(437, 39);
             this.labelLooseTextureNote.TabIndex = 2;
             this.labelLooseTextureNote.Text = resources.GetString("labelLooseTextureNote.Text");
-            // 
-            // labelGameDirNote
-            // 
             this.labelGameDirNote.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelGameDirNote.ForeColor = System.Drawing.Color.Black;
             this.labelGameDirNote.Location = new System.Drawing.Point(6, 162);
@@ -126,9 +95,6 @@
             this.labelGameDirNote.Size = new System.Drawing.Size(484, 39);
             this.labelGameDirNote.TabIndex = 1;
             this.labelGameDirNote.Text = resources.GetString("labelGameDirNote.Text");
-            // 
-            // labelAssetDirNote
-            // 
             this.labelAssetDirNote.AutoSize = true;
             this.labelAssetDirNote.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelAssetDirNote.ForeColor = System.Drawing.Color.Black;
@@ -139,9 +105,6 @@
             this.labelAssetDirNote.Text = "• If your mod contains files within the Assets folder, the Assets folder should b" +
     "e viewable in the file list.\r\n        The list should appear like the following:" +
     "";
-            // 
-            // formHelp
-            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;

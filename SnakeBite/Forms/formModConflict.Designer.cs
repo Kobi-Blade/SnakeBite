@@ -2,15 +2,7 @@
 {
     partial class formModConflict
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -21,11 +13,6 @@
         }
 
         #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             this.buttonInstall = new System.Windows.Forms.Button();
@@ -35,9 +22,6 @@
             this.labelCheckDebug = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureExclamation)).BeginInit();
             this.SuspendLayout();
-            // 
-            // buttonInstall
-            // 
             this.buttonInstall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonInstall.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonInstall.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -48,9 +32,6 @@
             this.buttonInstall.Text = "Install Anyway (Overwrite Existing Data)";
             this.buttonInstall.UseVisualStyleBackColor = true;
             this.buttonInstall.Click += new System.EventHandler(this.buttonInstall_Click);
-            // 
-            // buttonDontInstall
-            // 
             this.buttonDontInstall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonDontInstall.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonDontInstall.DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -62,9 +43,6 @@
             this.buttonDontInstall.Text = "Cancel Installation";
             this.buttonDontInstall.UseVisualStyleBackColor = true;
             this.buttonDontInstall.Click += new System.EventHandler(this.buttonDontInstall_Click);
-            // 
-            // labelHeader
-            // 
             this.labelHeader.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -75,9 +53,6 @@
             this.labelHeader.TabIndex = 2;
             this.labelHeader.Text = "[Examplemod1] conflicts with the following mods: ";
             this.labelHeader.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // pictureExclamation
-            // 
             this.pictureExclamation.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pictureExclamation.Image = global::SnakeBite.Properties.Resources.mgsexclamation;
             this.pictureExclamation.Location = new System.Drawing.Point(11, 12);
@@ -86,9 +61,6 @@
             this.pictureExclamation.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureExclamation.TabIndex = 3;
             this.pictureExclamation.TabStop = false;
-            // 
-            // labelCheckDebug
-            // 
             this.labelCheckDebug.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -102,9 +74,6 @@
             this.labelCheckDebug.Text = "Open the Debug Log for more information";
             this.labelCheckDebug.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.labelCheckDebug.Click += new System.EventHandler(this.labelCheckDebug_Click);
-            // 
-            // formModConflict
-            // 
             this.AcceptButton = this.buttonInstall;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;

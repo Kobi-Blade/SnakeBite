@@ -13,17 +13,11 @@ namespace SnakeBite.GzsTool
 {
     public static class GzsLib
     {
-        //GAMEVERSION: qar flags, should be updated to games flags (use gzstool on unmodded .dat and check flags)
         public static uint zeroFlags = 3150304;
         public static uint oneFlags = 3150048;
         public static uint chunk0Flags = 3146208;
         public static uint chunk7Flags = 3146208;
         public static uint texture7Flags = 3150048;
-
-        //tex see SortFpksFiles
-        //fpk,fpkd in extension sort order
-        //from ExtensionOrder.lua run of combined tpp,mgo,ssd fpks. However since some of the extensions don't have clear links it's at the mercy of whatever the topo sort algo decided to do
-        //RegisterPackageExtensionInfo call seems to mostly match derived fpkd order in reverse - however clo doesnt fit the order and lng isn't in its table.
         private static readonly Dictionary<string, List<string>> archiveExtensions = new Dictionary<string, List<string>> {
             {"dat",new List<string> {
                 "bnk",
@@ -129,8 +123,6 @@ namespace SnakeBite.GzsTool
             {"fpk", "FpkFile" },
             {"fpkd", "FpkFile" },
         };
-
-        // Extract full archive
         public static List<string> ExtractArchive<T>(string FileName, string OutputPath) where T : ArchiveFile, new()
         {
             if (!File.Exists(FileName))
@@ -151,8 +143,6 @@ namespace SnakeBite.GzsTool
                         Name = Path.GetFileName(FileName)
                     };
                     archive.Read(archiveFile);
-
-                    // Extract all files
                     IEnumerable<FileDataStreamContainer> exportedFiles = archive.ExportFiles(archiveFile);
                     foreach (FileDataStreamContainer v in exportedFiles)
                     {
@@ -160,12 +150,11 @@ namespace SnakeBite.GzsTool
                         string outFileName = Path.Combine(OutputPath, v.FileName);
                         if (!Directory.Exists(outDirectory))
                         {
-                            _ = Directory.CreateDirectory(outDirectory);
+                            Directory.CreateDirectory(outDirectory);
                         }
 
                         using (FileStream outStream = new FileStream(outFileName, FileMode.Create))
                         {
-                            // copy to output stream
                             v.DataStream().CopyTo(outStream);
                             outFiles.Add(v.FileName);
                         }
@@ -175,8 +164,6 @@ namespace SnakeBite.GzsTool
                 }
             }
         }
-
-        // Extract single file from archive
         public static bool ExtractFile<T>(string SourceArchive, string FilePath, string OutputFile) where T : ArchiveFile, new()
         {
             if (!File.Exists(SourceArchive))
@@ -187,7 +174,6 @@ namespace SnakeBite.GzsTool
             else
             {
                 Debug.LogLine(string.Format("[GzsLib] Extracting file {1}: {0} -> {2}", FilePath, SourceArchive, OutputFile));
-                // Get file hash from path
                 ulong fileHash = Tools.NameToHash(FilePath);
 
                 using (FileStream archiveFile = new FileStream(SourceArchive, FileMode.Open))
@@ -197,8 +183,6 @@ namespace SnakeBite.GzsTool
                         Name = Path.GetFileName(SourceArchive)
                     };
                     archive.Read(archiveFile);
-
-                    // Select single file for output
                     FileDataStreamContainer outFile = archive.ExportFiles(archiveFile).FirstOrDefault(entry => Tools.NameToHash(entry.FileName) == fileHash);
 
                     if (outFile != null)
@@ -206,27 +190,23 @@ namespace SnakeBite.GzsTool
                         string path = Path.GetDirectoryName(Path.GetFullPath(OutputFile));
                         if (!Directory.Exists(path))
                         {
-                            _ = Directory.CreateDirectory(path);
+                            Directory.CreateDirectory(path);
                         }
 
                         using (FileStream outStream = new FileStream(OutputFile, FileMode.Create))
                         {
-                            // copy to output stream
                             outFile.DataStream().CopyTo(outStream);
                         }
                         return true;
                     }
                     else
                     {
-                        // file not found
                         return false;
                     }
                 }
             }
 
         }
-
-        // Extract single file from archive
         public static bool ExtractFileByHash<T>(string SourceArchive, ulong FileHash, string OutputFile) where T : ArchiveFile, new()
         {
             if (!File.Exists(SourceArchive))
@@ -237,7 +217,6 @@ namespace SnakeBite.GzsTool
             else
             {
                 Debug.LogLine(string.Format("[GzsLib] Extracting file from {1}: hash {0} -> {2}", FileHash, SourceArchive, OutputFile));
-                // Get file hash from path
                 ulong fileHash = FileHash;
 
                 using (FileStream archiveFile = new FileStream(SourceArchive, FileMode.Open))
@@ -247,27 +226,23 @@ namespace SnakeBite.GzsTool
                         Name = Path.GetFileName(SourceArchive)
                     };
                     archive.Read(archiveFile);
-
-                    // Select single file for output
                     FileDataStreamContainer outFile = archive.ExportFiles(archiveFile).FirstOrDefault(entry => Tools.NameToHash(entry.FileName) == fileHash);
 
                     if (outFile != null)
                     {
                         if (!Directory.Exists(Path.GetDirectoryName(OutputFile)))
                         {
-                            _ = Directory.CreateDirectory(Path.GetDirectoryName(OutputFile));
+                            Directory.CreateDirectory(Path.GetDirectoryName(OutputFile));
                         }
 
                         using (FileStream outStream = new FileStream(OutputFile, FileMode.Create))
                         {
-                            // copy to output stream
                             outFile.DataStream().CopyTo(outStream);
                         }
                         return true;
                     }
                     else
                     {
-                        // file not found
                         return false;
                     }
                 }
@@ -310,8 +285,6 @@ namespace SnakeBite.GzsTool
             }
             return fpkReferences;
         }//GetFpkReferences
-
-        // Read file hashes contained within QAR archive
         public static List<GameFile> ListArchiveHashes<T>(string ArchiveName) where T : ArchiveFile, new()
         {
             if (!File.Exists(ArchiveName))
@@ -339,11 +312,6 @@ namespace SnakeBite.GzsTool
                 }
             }
         }
-
-        /// <summary>
-        /// return gamefiles by hash for given qar
-        /// does not include texture qars since it's currently only really used to look up fpks/archive files
-        /// </summary>
         public static Dictionary<ulong, GameFile> GetQarGameFiles(string qarPath)
         {
             if (!File.Exists(qarPath))
@@ -371,14 +339,6 @@ namespace SnakeBite.GzsTool
                 }
             }
         }
-
-
-        /// <summary>
-        /// Returns list of files within archive
-        /// </summary>
-        /// <typeparam name="T">GzsTool archive type</typeparam>
-        /// <param name="ArchiveName">Path to archive</param>
-        /// <returns>list of files within archive</returns>
         public static List<string> ListArchiveContents<T>(string ArchiveName) where T : ArchiveFile, new()
         {
             if (!File.Exists(ArchiveName))
@@ -406,10 +366,6 @@ namespace SnakeBite.GzsTool
                 }
             }
         }
-
-        /// <summary>
-        /// Load filename dictionaries into Hashing
-        /// </summary>
         public static void LoadDictionaries()
         {
             Debug.LogLine("[GzsLib] Loading base dictionaries");
@@ -423,26 +379,13 @@ namespace SnakeBite.GzsTool
         }
 
 #if SNAKEBITE
-        /// <summary>
-        /// Adds filenames to Hashing dictionaries
-        /// </summary>
         public static void LoadModDictionaries()
         {
             SettingsManager manager = new SettingsManager(GamePaths.SnakeBiteSettings);
-            //fpk dictionary only really needed for gz
-            //var FpkNames = manager.GetModFpkFiles();
             var QarNames = manager.GetModQarFiles(true);
-
-            //File.WriteAllLines("mod_fpk_dict.txt", FpkNames);
             File.WriteAllLines("mod_qar_dict.txt", QarNames);
-
-            //Hashing.ReadMd5Dictionary("mod_fpk_dict.txt");
             Hashing.ReadDictionary("mod_qar_dict.txt");
         }
-
-        /// <summary>
-        /// Adds qar filenames to Hashing dictionary for given modentry
-        /// </summary>
         public static void LoadModDictionary(ModEntry modEntry)
         {
             Debug.LogLine("[GzsLib] Loading mod dictionary");
@@ -457,17 +400,12 @@ namespace SnakeBite.GzsTool
             File.WriteAllLines("mod_qar_dict.txt", qarNames);
             Hashing.ReadDictionary("mod_qar_dict.txt");
         }
-
-        // Gets contents of most game dats
-        // Returns list (in game file priority order) of hash,GameFile dictionaries
         public static List<Dictionary<ulong, GameFile>> ReadBaseData()
         {
             Debug.LogLine("[GzsLib] Acquiring base game data");
 
             var baseDataFiles = new List<Dictionary<ulong, GameFile>>();
             string dataDir = Path.Combine(GamePaths.GameDir, "master");
-
-            //in priority order SYNC with or read foxfs.dat directly
             var qarFileNames = new List<string> {
                 "a_chunk7.dat",
                 "data1.dat",
@@ -496,12 +434,9 @@ namespace SnakeBite.GzsTool
             return baseDataFiles;
         }
 #endif
-        // Export FPK archive with specified parameters
         public static void WriteFpkArchive(string FileName, string SourceDirectory, List<string> Files, List<string> references)
         {
             Debug.LogLine(string.Format("[GzsLib] Writing FPK archive: {0}", FileName));
-            //tex sMakeBite for a for a long time (till 2021) only created fpkds with the FpkType as Fpk
-            //to no obvious issue with fox engine (and I wouldn't think FpkType would be used, maybe for some editor/data managment stuff, but wouldn't imagine it being used for runtime).
             string fpkType = FileName.EndsWith(".fpkd") ? "fpkd" : "fpk";
             List<string> fpkFilesSorted = SortFpksFiles(fpkType, Files);
 
@@ -510,7 +445,6 @@ namespace SnakeBite.GzsTool
             {
                 q.Entries.Add(new FpkEntry() { FilePath = Tools.ToQarPath(s) });
             }
-            //tex likewise sMakeBite didn't write/preserve references, to no apparent issue for fox.
             foreach (string fpk in references)
             {
                 FpkReference reference = new FpkReference()
@@ -526,8 +460,6 @@ namespace SnakeBite.GzsTool
                 q.Write(outFile, fileDirectory);
             }
         }
-
-        // Export QAR archive with specified parameters
         public static void WriteQarArchive(string FileName, string SourceDirectory, List<string> Files, uint Flags)
         {
             Debug.LogLine($"[GzsLib] Writing {Path.GetFileName(FileName)}");
@@ -560,45 +492,20 @@ namespace SnakeBite.GzsTool
                 Debug.LogLine($"[GzsLib] {sourcePath} not found");
             }
         }
-
-        //SYNC: MakeBite
-        //tex fpkds seem to require a specific order to their files.
-        //Don't know whether this is also an issue for fpks, or other archives (are there any other archives with multiple filetypes?)
-        //Reproduction: Extract an unmodified fpkd (such as chunk0_dat\Assets\tpp\pack\mission2\init\init.fpkd, as it's loaded automatically and early) DEBUGNOW redo this test to confirm issue again
-        //change the order of the file entries in the .fpkd.xml so that they're not grouped by extension
-        //repack and the load the game
-        //game will fail to load
-        //as the issue doesn't seem to happen when there are no fox2s in fpkd VERIFY
-        //it might simply be that the first entries must be fox2s?
-        //Furthermore, entries are also sorted alphanumeric ordinal - ascending for fpk, descending for fpkd for some reason, but (lua at the very least) loaded in alpha ascending
-        //Reproduction: have two lua files, one referencing the other (or rather a field of the other ie somescript.somevar) directly in its load time script (ie not hidden in a function) - (this also suggests that lua files are just loaded to fpkd order rather than having a load order specified anywhere) DEBUGNOW actually test lol
-        //Or just hook luaL_loadbuffer and see the load order for a vanilla file.
-        //GOTCHA: This mean there's a currently unresolved (unresolvable?) problem of mixing in hashed entries as you can't know their position. Though that's only an issue for GZ fpks? (and s/MakeBite isn't for gz)
-        //GOTCHA: while archiveExtensions is a good effort at reconstructing order by examining exising files, it doesn't have full coverage 
-        //as some extensions can only be reconsructed in unconnected groups, so the placement of those in the overall order are just at the whim of whatever the topo algo put them at
-        //Some lua scripts reference some extensions: RegisterExtensionInfo, RegisterPackageExtensionInfo
-        //however only some of the extensions match observed fpk file order.
-        //The only real solution here is if the fox engine fpk loader has an apparent reversable load order.
-        //As it currently stands (2021-02-20) it (via BuildFpk) repacks all vanilla tpp,mgo,sdd fpk files (provided that fpk.References are coppied) to binary identical files. (except for fpkds with lua since gzslib doesnt reencrypt).
         public static List<string> SortFpksFiles(string FpkType, List<string> fpkFiles)
         {
             if (fpkFiles.Count <= 1)
             {
                 return fpkFiles;
             }
-
-            //tex sorted by alpha as per vanilla
             if (FpkType == "fpk")
             {
                 fpkFiles.Sort(StringComparer.Ordinal);
             }
             else
             {
-                //fpkd is alpha descending for some reason
                 fpkFiles.Sort((a, b) => string.CompareOrdinal(b, a));
             }
-
-            //tex add to sorted list by extension order
             List<string> fpkFilesSorted = new List<string>();
             foreach (string archiveExtension in archiveExtensions[FpkType])
             {
@@ -631,8 +538,6 @@ namespace SnakeBite.GzsTool
             return isValid;
         }
     }
-
-    // Hashing snippet to check outdated filenames
     public static class HashingExtended
     {
         private static readonly Dictionary<ulong, string> HashNameDictionary = new Dictionary<ulong, string>();
@@ -656,7 +561,7 @@ namespace SnakeBite.GzsTool
             string filename = Path.GetFileNameWithoutExtension(inputFile);
             string ext = Path.GetExtension(inputFile);
             string extInner = "";
-            if (filename.Contains(".")) // Ex: .1.ftexs, .eng.lng
+            if (filename.Contains("."))
             {
                 extInner = Path.GetExtension(filename);
                 filename = Path.GetFileNameWithoutExtension(filename);

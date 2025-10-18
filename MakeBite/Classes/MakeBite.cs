@@ -55,8 +55,6 @@ namespace MakeBite
         {
             List<string> ListQarFolders = new List<string>();
             List<string> ListQarFiles = new List<string>();
-
-            // Get a list of all folders to check for files (no _fpk/_fpkd)
             foreach (string Directory in Directory.GetDirectories(PathName, "*.*", SearchOption.AllDirectories))
             {
                 if (IsArchiveFolder(PathName, Directory))
@@ -72,7 +70,6 @@ namespace MakeBite
                 ListQarFolders.Add(Directory);
             }
             ListQarFolders.Add(PathName);
-            // Check all folders for files
             foreach (string Folder in ListQarFolders)
             {
                 foreach (string FileName in Directory.GetFiles(Folder))
@@ -99,8 +96,6 @@ namespace MakeBite
         {
             List<string> ListFolders = new List<string>();
             List<string> ListFiles = new List<string>();
-
-            // Get a list of all folders to check for files (no _fpk/_fpkd)
             foreach (string Directory in Directory.GetDirectories(PathName, "*.*", SearchOption.AllDirectories))
             {
                 if (IsArchiveFolder(PathName, Directory))
@@ -115,8 +110,6 @@ namespace MakeBite
 
                 ListFolders.Add(Directory);
             }
-
-            // Check all folders for files
             foreach (string Folder in ListFolders)
             {
                 foreach (string FileName in Directory.GetFiles(Folder))
@@ -129,20 +122,13 @@ namespace MakeBite
                             skipFile = true;
                         }
                     }
-                    /*
-                    foreach (string ignoreExt in ignoreExtList) {
-                        if (FileName.Contains(ignoreExt)) {
-                            skipFile = true;
-                        }
-                    }
-                    */
                     if (skipFile)
                     {
                         continue;
                     }
 
                     string FilePath = FileName.Substring(Folder.Length);
-                    if (!FilePath.Contains("metadata.xml")) // ignore xml metadata
+                    if (!FilePath.Contains("metadata.xml"))
                     {
                         ListFiles.Add(FileName);
                     }
@@ -151,14 +137,6 @@ namespace MakeBite
 
             return ListFiles;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sourceFpkFolder">path to folder that contains the files that will go into the fpk (with fpk-internal layout)</param>
-        /// <param name="destFpkName"></param>
-        /// <param name="rootDir">The root the fpk will go into, used by sMakeBite to derive the qar-internal path</param>
-        /// <param name="fpkReferences"></param>
-        /// <returns></returns>
         public static List<ModFpkEntry> BuildFpk(string sourceFpkFolder, string destFpkName, string rootDir, List<string> fpkReferences)
         {
             SnakeBite.Debug.LogLine($"[BuildFpk] {sourceFpkFolder}.");
@@ -204,9 +182,7 @@ namespace MakeBite
                 Debug.LogLine(string.Format("[BuildArchive] preexisting _build directory could not be deleted: {0}", buildDir));
             }
 
-            _ = Directory.CreateDirectory("_build");
-
-            //try and update hashed names of fpks
+            Directory.CreateDirectory("_build");
             List<string> fpkFiles = Directory.GetFiles(SourceDir, "*.fpk*", SearchOption.AllDirectories).ToList();
             for (int i = fpkFiles.Count - 1; i >= 0; i--)
             {
@@ -219,14 +195,13 @@ namespace MakeBite
                         updatedFileName = SourceDir + updatedFileName.Replace('/', '\\');
                         if (fpkFiles.Contains(updatedFileName))
                         {
-                            _ = fpkFiles.Remove(fpkFiles[i]);
+                            fpkFiles.Remove(fpkFiles[i]);
                         }
                     }
                 }
             }//for fpkFiles
 
             List<string> fpkFolders = ListFpkFolders(SourceDir);
-            //try and update hashed names of fpk folders
             for (int i = fpkFolders.Count - 1; i >= 0; i--)
             {
                 string fpkFolder = fpkFolders[i].Substring(SourceDir.Length + 1);
@@ -239,14 +214,12 @@ namespace MakeBite
                         if (fpkFolders.Contains(updatedFileName.Replace(".fpk", "_fpk")) || fpkFiles.Contains(updatedFileName))
                         {
 
-                            _ = MessageBox.Show(string.Format("{0} was not packed or added to the build, because {1} (the unhashed filename of {0}) already exists in the mod directory.", Path.GetFileName(fpkFolders[i]), Path.GetFileName(updatedFileName)));
-                            _ = fpkFolders.Remove(fpkFolders[i]);
+                            MessageBox.Show(string.Format("{0} was not packed or added to the build, because {1} (the unhashed filename of {0}) already exists in the mod directory.", Path.GetFileName(fpkFolders[i]), Path.GetFileName(updatedFileName)));
+                            fpkFolders.Remove(fpkFolders[i]);
                         }
                     }
                 }
             }//for fpkFolders
-
-            // check for FPKs that must be built and build
             metaData.ModFpkEntries = new List<ModFpkEntry>();
             List<string> builtFpks = new List<string>();
             List<string> fpkReferences = new List<string>();//TODO: allow user to specify references
@@ -262,11 +235,8 @@ namespace MakeBite
                     }
                 }
             }
-
-            // check for other FPKs and build fpkentry data
             foreach (string SourceFile in Directory.GetFiles(SourceDir, "*.fpk*", SearchOption.AllDirectories))
             {
-                //tex chunk0\Assets\tpp\pack\collectible\common\col_common_tpp_fpk\Assets\tpp\pack\resident\resident00.fpkl is the only fpkl, don't know what a fpkl is, but gzcore crashes on it.
                 if (SourceFile.EndsWith(".fpkl") || SourceFile.EndsWith(".xml"))
                 {
                     continue;
@@ -274,12 +244,11 @@ namespace MakeBite
                 string FileName = Tools.ToQarPath(SourceFile.Substring(SourceDir.Length));
                 if (!builtFpks.Contains(FileName))
                 {
-                    // unpack FPK and build FPK list
                     string fpkDir = Tools.ToWinPath(FileName.Replace(".fpk", "_fpk"));
                     string fpkFullDir = Path.Combine(SourceDir, fpkDir);
                     if (!Directory.Exists(fpkFullDir))
                     {
-                        _ = GzsLib.ExtractArchive<FpkFile>(SourceFile, fpkFullDir);
+                        GzsLib.ExtractArchive<FpkFile>(SourceFile, fpkFullDir);
                     }
 
                     List<string> fpkContents = GzsLib.ListArchiveContents<FpkFile>(SourceFile);
@@ -300,8 +269,6 @@ namespace MakeBite
                     }
                 }
             }
-
-            // build QAR entries
             List<string> qarFiles = ListQarFiles(SourceDir);
             for (int i = qarFiles.Count - 1; i >= 0; i--)
             {
@@ -314,8 +281,8 @@ namespace MakeBite
                         updatedQarName = SourceDir + updatedQarName.Replace('/', '\\');
                         if (qarFiles.Contains(updatedQarName))
                         {
-                            _ = MessageBox.Show(string.Format("{0} was not added to the build, because {1} (the unhashed filename of {0}) already exists in the mod directory.", Path.GetFileName(qarFiles[i]), Path.GetFileName(updatedQarName)));
-                            _ = qarFiles.Remove(qarFiles[i]);
+                            MessageBox.Show(string.Format("{0} was not added to the build, because {1} (the unhashed filename of {0}) already exists in the mod directory.", Path.GetFileName(qarFiles[i]), Path.GetFileName(updatedQarName)));
+                            qarFiles.Remove(qarFiles[i]);
                         }
                     }
                 }
@@ -323,10 +290,9 @@ namespace MakeBite
 
             metaData.ModQarEntries = new List<ModQarEntry>();
             metaData.ModFileEntries = new List<ModFileEntry>();
-            metaData.ModWmvEntries = new List<ModWmvEntry>(); //ZIP: Custom WMV Support
+            metaData.ModWmvEntries = new List<ModWmvEntry>();
             foreach (string qarFile in qarFiles)
             {
-                //ZIP: Custom WMV Support
                 if (qarFile.Contains("Assets\\tpp\\movie\\Win"))
                 {
                     BuildWMVDat(qarFile, SourceDir, ref metaData);
@@ -334,10 +300,10 @@ namespace MakeBite
                 }
 
                 string qarFilePath = Tools.ToQarPath(qarFile.Substring(SourceDir.Length));
-                string subDir = qarFile.Substring(0, qarFile.LastIndexOf("\\")).Substring(SourceDir.Length).TrimStart('\\'); // the subdirectory for XML output
+                string subDir = qarFile.Substring(0, qarFile.LastIndexOf("\\")).Substring(SourceDir.Length).TrimStart('\\');
                 if (!Directory.Exists(Path.Combine("_build", subDir)))
                 {
-                    _ = Directory.CreateDirectory(Path.Combine("_build", subDir)); // create file structure
+                    Directory.CreateDirectory(Path.Combine("_build", subDir));
                 }
 
                 File.Copy(qarFile, Path.Combine("_build", Tools.ToWinPath(qarFilePath)), true);
@@ -351,18 +317,15 @@ namespace MakeBite
                     Hash = hash
                 });
             }
-
-            //tex build external entries
-            //metaData.ModFileEntries = new List<ModFileEntry>();
             List<string> externalFiles = ListExternalFiles(SourceDir);
             foreach (string externalFile in externalFiles)
             {
-                string subDir = externalFile.Substring(0, externalFile.LastIndexOf("\\")).Substring(SourceDir.Length).TrimStart('\\'); // the subdirectory for XML output
+                string subDir = externalFile.Substring(0, externalFile.LastIndexOf("\\")).Substring(SourceDir.Length).TrimStart('\\');
                 string externalFilePath = Tools.ToQarPath(externalFile.Substring(SourceDir.Length));
 
                 if (!Directory.Exists(Path.Combine("_build", subDir)))
                 {
-                    _ = Directory.CreateDirectory(Path.Combine("_build", subDir)); // create file structure
+                    Directory.CreateDirectory(Path.Combine("_build", subDir));
                 }
 
                 File.Copy(externalFile, Path.Combine("_build", Tools.ToWinPath(externalFilePath)), true);
@@ -371,15 +334,12 @@ namespace MakeBite
                 {
                     externalFilePath = externalFilePath.Substring(strip.Length);
                 }
-                //ulong hash = Tools.NameToHash(qarFilePath);
                 metaData.ModFileEntries.Add(new ModFileEntry() { FilePath = externalFilePath, ContentHash = Tools.GetMd5Hash(externalFile) });
             }
 
             metaData.SBVersion.Version = Application.ProductVersion;
 
             metaData.SaveToFile("_build\\metadata.xml");
-
-            // build archive
             FastZip zipper = new FastZip();
             zipper.CreateZip(outputFilePath, "_build", true, "(.*?)");
 
@@ -395,38 +355,27 @@ namespace MakeBite
 
         public static void BuildWMVDat(string qarFile, string SourceDir, ref ModEntry metaData)
         {
-            //ZIP: If filename doesn't include en/jp, fix that.
             if (!qarFile.Contains("_jp") && !qarFile.Contains("_en"))
             {
                 string newName = qarFile.Replace(".dat", "_en.dat");
                 File.Move(qarFile, newName);
                 qarFile = newName;
             }
-
-            //ZIP: Add decimal hash to WmvEntries.
-            ulong datToWMV = 3924887075253387264; //ZIP: .wmv extension doesn't hash properly. Hack.
+            ulong datToWMV = 3924887075253387264;
             string qarFilePath = Tools.ToQarPath(qarFile.Substring(SourceDir.Length));
-            ulong wmvHash = Tools.NameToHash(qarFilePath) + datToWMV; //TODO: Get HashFileNameWithExtension to work with strings containing ".wmv"         
-
-            //ZIP: Change export directory for WMV .dat
+            ulong wmvHash = Tools.NameToHash(qarFilePath) + datToWMV;
             string newSourceDir = SourceDir.Replace("Assets\\tpp\\movie\\Win", "GameDir\\master");
             string newQarFile = qarFile.Replace("Assets\\tpp\\movie\\Win", "GameDir\\master");
             qarFilePath = Tools.ToQarPath(newQarFile.Substring(newSourceDir.Length));
-
-            //ZIP: Convert decimal to hex hash and rename dat.
             string hexHash = wmvHash.ToString("X").ToLower() + ".dat";
             qarFilePath = qarFilePath.Substring(0, qarFilePath.LastIndexOf("/") + 1) + hexHash;
-
-            //ZIP: Copy the new WMV .dat
-            string subDir = newQarFile.Substring(0, newQarFile.LastIndexOf("\\")).Substring(newSourceDir.Length).TrimStart('\\'); // the subdirectory for XML output
+            string subDir = newQarFile.Substring(0, newQarFile.LastIndexOf("\\")).Substring(newSourceDir.Length).TrimStart('\\');
             if (!Directory.Exists(Path.Combine("_build", subDir)))
             {
-                _ = Directory.CreateDirectory(Path.Combine("_build", subDir)); // create file structure
+                Directory.CreateDirectory(Path.Combine("_build", subDir));
             }
 
             File.Copy(qarFile, Path.Combine("_build", Tools.ToWinPath(qarFilePath)), true);
-
-            //ZIP: Add WMV .dat to file/wmv entries.
             metaData.ModWmvEntries.Add(new ModWmvEntry() { Hash = wmvHash });
             metaData.ModFileEntries.Add(new ModFileEntry()
             {

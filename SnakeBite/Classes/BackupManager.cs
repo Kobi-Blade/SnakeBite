@@ -31,18 +31,13 @@ namespace SnakeBite
 
         public static void RestoreOriginals()
         {
-            // delete existing data
             File.Delete(ZeroPath);
             File.Delete(OnePath);
             File.Delete(chunk0Path);
             File.Delete(c7Path);
             File.Delete(t7Path);
-
-            // delete mod data
             File.Delete(ZeroPath + modded_ext);
             File.Delete(OnePath + modded_ext);
-
-            // delete GameDir data
             List<string> fileEntryDirs = new List<string>();
             foreach (string externalFile in new SettingsManager(SnakeBiteSettings).GetModExternalFiles())
             {
@@ -86,8 +81,6 @@ namespace SnakeBite
                     }
                 }
             }
-
-            // restore backups
             bool fileExists = true;
             while (fileExists)
             {
@@ -126,7 +119,6 @@ namespace SnakeBite
 
         public static void DeleteOriginals()
         {
-            // delete backups
             File.Delete(ZeroPath + original_ext);
             File.Delete(OnePath + original_ext);
             File.Delete(chunk0Path + original_ext);
@@ -136,11 +128,8 @@ namespace SnakeBite
         {
             if (OriginalZeroOneExist())
             {
-                // copy mod files to backup
                 File.Copy(ZeroPath, ZeroPath + modded_ext, true);
                 File.Copy(OnePath, OnePath + modded_ext, true);
-
-                // copy original files
                 File.Copy(ZeroPath + original_ext, ZeroPath, true);
                 File.Copy(OnePath + original_ext, OnePath, true);
 
@@ -153,11 +142,8 @@ namespace SnakeBite
         {
             if (ModsDisabled())
             {
-                // restore mod backup
                 File.Copy(ZeroPath + modded_ext, ZeroPath, true);
                 File.Copy(OnePath + modded_ext, OnePath, true);
-
-                // delete mod backup
                 File.Delete(ZeroPath + modded_ext);
                 File.Delete(OnePath + modded_ext);
                 SettingsManager manager = new SettingsManager(SnakeBiteSettings);
@@ -168,11 +154,6 @@ namespace SnakeBite
 
             }
         }
-
-        /// <summary>
-        /// Back up dat files
-        /// as DoWorkEventHandler
-        /// </summary>
         public static void backgroundWorker_CopyBackupFiles(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker backupProcessor = (BackgroundWorker)sender;

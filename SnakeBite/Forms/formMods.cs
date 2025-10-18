@@ -27,7 +27,6 @@ namespace SnakeBite
 
         private void formMain_Load(object sender, EventArgs e)
         {
-            // Refresh button state
             panelContent.Controls.Add(noInstallNotice);
             panelContent.Controls.Add(log);
             panelContent.Controls.Add(modDescription);
@@ -54,10 +53,10 @@ namespace SnakeBite
 
         private delegate void GoToModListDelegate();
 
-        private void checkBoxMarkAll_Click(object sender, EventArgs e) //Checks all mods if one or more are unchecked, and unchecks all mods if they're all checked.
+        private void checkBoxMarkAll_Click(object sender, EventArgs e)
         {
-            checkBoxMarkAll.CheckState = CheckState.Checked; // Keeps the checkbox checked, even after the user has clicked it. using _Click avoids infinite recursion.
-            bool isAllChecked = true; // assume all are checked
+            checkBoxMarkAll.CheckState = CheckState.Checked;
+            bool isAllChecked = true;
 
             for (int i = 0; i < listInstalledMods.Items.Count; i++)
             {
@@ -67,7 +66,7 @@ namespace SnakeBite
                     listInstalledMods.SetItemCheckState(i, CheckState.Checked);
                 }
             }
-            if (isAllChecked == true) // if still true after the first loop, all boxes are checked. Second loop will uncheck all boxes.
+            if (isAllChecked == true)
             {
                 for (int i = 0; i < listInstalledMods.Items.Count; i++)
                 {
@@ -76,9 +75,8 @@ namespace SnakeBite
             }
         }
 
-        private void buttonInstall_Click(object sender, EventArgs e) //opens directory browser for .mgsv mods, and sends the selected mods to formInstallOrder.
+        private void buttonInstall_Click(object sender, EventArgs e)
         {
-            // Show 'open files' dialog for mod files
             OpenFileDialog openModFile = new OpenFileDialog();
             List<string> ModNames = new List<string>();
 
@@ -96,15 +94,14 @@ namespace SnakeBite
             }
 
             formInstallOrder installer = new formInstallOrder();
-            installer.ShowDialog(ModNames); // send to formInstallOrder for installation prep.
+            installer.ShowDialog(ModNames);
             RefreshInstalledMods();
 
             listInstalledMods.SelectedIndex = listInstalledMods.Items.Count - 1;
         }
 
-        private void buttonUninstall_Click(object sender, EventArgs e) //sends checked indices to ModManager for uninstallation.
+        private void buttonUninstall_Click(object sender, EventArgs e)
         {
-            // Get the indices of all checked mods, and their names.
             CheckedListBox.CheckedIndexCollection checkedModIndices = listInstalledMods.CheckedIndices;
             CheckedListBox.CheckedItemCollection checkedModItems = listInstalledMods.CheckedItems;
             string markedModNames = "";
@@ -120,7 +117,7 @@ namespace SnakeBite
 
             log.ClearPage();
             SetVisiblePage(log);
-            ProgressWindow.Show("Uninstalling Mod(s)", "Uninstalling, please wait...", new Action((MethodInvoker)delegate { _ = UninstallManager.UninstallMods(checkedModIndices); }), log);
+            ProgressWindow.Show("Uninstalling Mod(s)", "Uninstalling, please wait...", new Action((MethodInvoker)delegate { UninstallManager.UninstallMods(checkedModIndices); }), log);
 
             RefreshInstalledMods(true);
         }
@@ -152,10 +149,6 @@ namespace SnakeBite
                 }
             }
         }
-
-        /// <summary>
-        /// command-line install.
-        /// </summary>
         internal void ProcessInstallMod(List<string> installPaths, bool skipConflictChecks, bool skipCleanup)
         {
             List<string> InstallFileList = new List<string>();
@@ -208,11 +201,10 @@ namespace SnakeBite
                 displayPath = $"{displayPath} and {InstallFileList.Count} mods";
             }
             ProgressWindow.Show("Installing Mod", $"Installing {displayPath}...",
-                new Action((MethodInvoker)delegate { _ = InstallManager.InstallMods(InstallFileList, skipCleanup); }
+                new Action((MethodInvoker)delegate { InstallManager.InstallMods(InstallFileList, skipCleanup); }
             ), log);
-            _ = Invoke((MethodInvoker)delegate { RefreshInstalledMods(); });
+            Invoke((MethodInvoker)delegate { RefreshInstalledMods(); });
         }
-        //TODO: not enough info in ModEntry to match uninstall using passed in filename
         public void ProcessUninstallMod(List<string> modPaths, bool skipcleanup)// command-line uninstall using list of mod names
         {
             for (int i = 0; i < listInstalledMods.Items.Count; i++)
@@ -223,17 +215,17 @@ namespace SnakeBite
             List<ModEntry> mods = manager.GetInstalledMods();
             foreach (string modPath in modPaths)
             {
-                ModEntry mod = mods.FirstOrDefault(entry => entry.Name == modPath); // select mod
+                ModEntry mod = mods.FirstOrDefault(entry => entry.Name == modPath);
                 if (mod != null)
                 {
                     listInstalledMods.SetItemCheckState(mods.IndexOf(mod), CheckState.Checked);
                 }
             }
             CheckedListBox.CheckedIndexCollection checkedModIndices = listInstalledMods.CheckedIndices;
-            ProgressWindow.Show("Uninstalling Mod", "Uninstalling...", new Action((MethodInvoker)delegate { _ = UninstallManager.UninstallMods(checkedModIndices, skipcleanup); }), log);
+            ProgressWindow.Show("Uninstalling Mod", "Uninstalling...", new Action((MethodInvoker)delegate { UninstallManager.UninstallMods(checkedModIndices, skipcleanup); }), log);
         }
 
-        private void RefreshInstalledMods(bool resetSelection = false) // Clears and then repopulates the installed mod list
+        private void RefreshInstalledMods(bool resetSelection = false)
         {
             List<ModEntry> mods = manager.GetInstalledMods();
             listInstalledMods.Items.Clear();
@@ -246,7 +238,7 @@ namespace SnakeBite
 
                 foreach (ModEntry mod in mods)
                 {
-                    _ = listInstalledMods.Items.Add(mod.Name);
+                    listInstalledMods.Items.Add(mod.Name);
                 }
 
                 if (resetSelection)
@@ -272,7 +264,7 @@ namespace SnakeBite
                     Debug.LogLine("Launching game...", Debug.LogLevel.Basic);
                     try
                     {
-                        _ = Process.Start(GamePaths.GameDir + "\\mgsvtpp.exe");
+                        Process.Start(GamePaths.GameDir + "\\mgsvtpp.exe");
                         if (Properties.Settings.Default.CloseSnakeBiteOnLaunch)
                         {
                             Application.Exit();
@@ -286,7 +278,7 @@ namespace SnakeBite
                 }
                 else
                 {
-                    _ = MessageBox.Show("Unable to locate mgsvtpp.exe. Please check the MGSV install path and try again.", "Error launching MGSV", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Unable to locate mgsvtpp.exe. Please check the MGSV install path and try again.", "Error launching MGSV", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -316,7 +308,7 @@ namespace SnakeBite
             ProgressWindow.Show("Saving Preset", "Saving Preset, please wait...", new Action((MethodInvoker)delegate { success = PresetManager.SavePreset(presetPath); }), log);
             if (success)
             {
-                _ = MessageBox.Show(string.Format("'{0}' Saved.", Path.GetFileName(presetPath)), "Preset Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(string.Format("'{0}' Saved.", Path.GetFileName(presetPath)), "Preset Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
             RefreshInstalledMods(true);
@@ -325,11 +317,6 @@ namespace SnakeBite
         private void menuItemLoadPreset_Click(object sender, EventArgs e)
         {
             OneTimePresetHelp();
-            /* This might be useful but I'm worried that the user might mistake the prompt and end up overwriting the preset that they wanted to load
-            DialogResult saveModsResult = MessageBox.Show("Would you like to save your current mods as a Preset before loading a new Preset?", "Save current mods?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-            if (saveModsResult == DialogResult.Yes) SavePreset();
-            else if (saveModsResult == DialogResult.Cancel) return;
-            */
             OpenFileDialog getPresetFile = new OpenFileDialog
             {
                 Filter = "MGSV Preset File|*.MGSVPreset|All Files|*.*",
@@ -380,13 +367,13 @@ namespace SnakeBite
             }
             catch (Exception f)
             {
-                _ = MessageBox.Show("An error has occurred and the .MGSVPreset could not be loaded. Maybe the Preset file was packed improperly, or is being used by another program?\nException: " + f);
+                MessageBox.Show("An error has occurred and the .MGSVPreset could not be loaded. Maybe the Preset file was packed improperly, or is being used by another program?\nException: " + f);
                 success = false;
             }
             RefreshInstalledMods(true);
             if (success)
             {
-                _ = MessageBox.Show(string.Format("'{0}' Loaded", Path.GetFileName(presetPath)), "Preset Loaded", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(string.Format("'{0}' Loaded", Path.GetFileName(presetPath)), "Preset Loaded", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -395,7 +382,7 @@ namespace SnakeBite
             string installPath = Properties.Settings.Default.InstallPath;
             try
             {
-                _ = Process.Start(installPath);
+                Process.Start(installPath);
             }
             catch
             {
@@ -410,7 +397,7 @@ namespace SnakeBite
 
         private void menuItemBrowseMods_Click(object sender, EventArgs e)
         {
-            _ = Process.Start(GamePaths.SBWMSearchURLPath);
+            Process.Start(GamePaths.SBWMSearchURLPath);
         }
 
         private void menuItemExit_Click(object sender, EventArgs e)
@@ -432,7 +419,7 @@ namespace SnakeBite
             {
                 Owner = this
             };
-            _ = Settings.ShowDialog();
+            Settings.ShowDialog();
 
             bool modsEnabled = !BackupManager.ModsDisabled();
             SetModsEnabled(modsEnabled);
@@ -464,22 +451,22 @@ namespace SnakeBite
 
             try
             {
-                _ = Process.Start(makeBitePath);
+                Process.Start(makeBitePath);
             }
             catch
             {
-                _ = MessageBox.Show("MakeBite application could not be opened from " + makeBitePath, "Failed to launch MakeBite", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("MakeBite application could not be opened from " + makeBitePath, "Failed to launch MakeBite", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
         private void menuItemWikiLink_Click(object sender, EventArgs e)
         {
-            _ = Process.Start(GamePaths.WikiURLPath);
+            Process.Start(GamePaths.WikiURLPath);
         }
 
         private void menuItemHelpInstall_Click(object sender, EventArgs e)
         {
-            _ = MessageBox.Show("SnakeBite can install mods that have the '.MGSV' file extensions. After downloading a .MGSV file, the user can install it with SnakeBite by clicking the \"Install .MGSV File(s)\" button in the bottom-left corner of the menu." +
+            MessageBox.Show("SnakeBite can install mods that have the '.MGSV' file extensions. After downloading a .MGSV file, the user can install it with SnakeBite by clicking the \"Install .MGSV File(s)\" button in the bottom-left corner of the menu." +
                 "\n\nMultiple mods can be selected at once when choosing what to install. Upon selecting a file, SnakeBite will open the Installation Manager submenu, where the mod will be listed and previewable. Additionally, mods can be added, removed and sorted in this menu." +
                 "\n\nWhen the user is ready to install the selected mods, they can click the \"Continue Installation\" button in the bottom-right corner of the submenu. The install time depends greatly on the mod's contents, number of mods being installed and the mods that are already installed." +
                 "\n\nThe installation is complete when the user is returned to the main menu. All mods installed with SnakeBite will now be listed on the menu, and will appear in-game. It is not necessary to launch the game using SnakeBite in order to use the installed mods.", "Installing a Mod", MessageBoxButtons.OK, MessageBoxIcon.Question);
@@ -487,7 +474,7 @@ namespace SnakeBite
 
         private void menuItemHelpUninstall_Click(object sender, EventArgs e)
         {
-            _ = MessageBox.Show("To uninstall a mod, the user must simply click on the checkbox beside the mod's name, and then click the \"Uninstall Checked Mod(s)\" button in the bottom-left corner of the menu." +
+            MessageBox.Show("To uninstall a mod, the user must simply click on the checkbox beside the mod's name, and then click the \"Uninstall Checked Mod(s)\" button in the bottom-left corner of the menu." +
                 "\n\nMultiple mods can be uninstalled at once by clicking on their checkboxes. In addition, the user can mark all mods by clicking on the checkbox in the top-left corner of the menu, beside the \"Installed Mods\" text." +
                 "\n\nThe uninstall time depends greatly on the number of mods being uninstalled, their contents, and the mods that remain installed.", "Uninstalling a Mod", MessageBoxButtons.OK, MessageBoxIcon.Question);
         }
@@ -497,13 +484,13 @@ namespace SnakeBite
             if (MessageBox.Show("To create a mod for SnakeBite, the user must build a .MGSV file using MakeBite (which was installed automatically alongside SnakeBite). MakeBite can create mods by packing all of the files from a specified folder into a new .MGSV file. " +
                 "\n\nIn fact, .MGSV files are .zip files with a different file extension.\n\nThere are a number of tools and tutorials available for users to learn how to modify and prepare game files for MakeBite.\nWould you like to visit the MakeBite Wiki page for more information?", "Creating a Mod", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                _ = Process.Start(GamePaths.WikiURLPath + "SnakeBite#MakeBite");
+                Process.Start(GamePaths.WikiURLPath + "SnakeBite#MakeBite");
             }
         }
 
-        private void menuItemHelpConflicts_Click(object sender, EventArgs e) // TODO: move all of these messageboxes to a static 'Tips' class? 
+        private void menuItemHelpConflicts_Click(object sender, EventArgs e)
         {
-            _ = MessageBox.Show("A 'Mod Conflict' is when two or more mods compete to modify the same game file. Whichever mod which was installed last will overwrite any conflicting files of the mods above it. " +
+            MessageBox.Show("A 'Mod Conflict' is when two or more mods compete to modify the same game file. Whichever mod which was installed last will overwrite any conflicting files of the mods above it. " +
                 "\n\nIf the mods have already been installed, the user can only adjust the overwrite order by uninstalling all of the conflicting mods and then reinstalling them in the preferred order. " +
                 "\n\nFurthermore, uninstalling only one of the mods will NOT fix a conflict! When a mod is uninstalled, SnakeBite will remove all files that were included in that mod. This creates a 'hole' for the rest of the conflicting mods that were competing for the game file. This hole is not filled by the remaining mods, regardless of their order in the mod list." +
                 "\n\nWarning: overwriting a mod's data may cause significant problems in-game, which could affect your enjoyment. Install at your own risk.", "What is a Mod Conflict?", MessageBoxButtons.OK, MessageBoxIcon.Question);
@@ -511,9 +498,9 @@ namespace SnakeBite
 
         private void menuItemOpenBugReport_Click(object sender, EventArgs e)
         {
-            _ = MessageBox.Show("If you have found an issue with SnakeBite, please report the bug with as much information as you can gather! Be sure to include the relevant Debug Log in the bug report, and do your best to explain how you are able to reproduce the issue." +
+            MessageBox.Show("If you have found an issue with SnakeBite, please report the bug with as much information as you can gather! Be sure to include the relevant Debug Log in the bug report, and do your best to explain how you are able to reproduce the issue." +
                 "\n\nAlso, always search through the existing bug reports to make sure that your issue hasn't already been created. If your bug is already reported, add your information to that bug report instead!", "Reporting a Bug", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            _ = Process.Start(GamePaths.SBWMBugURLPath);
+            Process.Start(GamePaths.SBWMBugURLPath);
         }
 
         private void menuItemHelpPresets_Click(object sender, EventArgs e)
@@ -523,7 +510,7 @@ namespace SnakeBite
 
         private void ShowPresetHelp()
         {
-            _ = MessageBox.Show("A 'Mod Preset' is a collection of mods which can be saved and loaded with SnakeBite. Saving a Preset will pack your current modded game data into a .MGSVPreset file. Loading a Preset will simply replace your game data with the files stored in the .MGSVPreset file." +
+            MessageBox.Show("A 'Mod Preset' is a collection of mods which can be saved and loaded with SnakeBite. Saving a Preset will pack your current modded game data into a .MGSVPreset file. Loading a Preset will simply replace your game data with the files stored in the .MGSVPreset file." +
                 "\n\nPresets are a fast and simple method of organizing your favorite mods or trying new mod combinations." +
                 "\n\nYou can also utilize Presets as restore checkpoints if SnakeBite encounters a serious error or your game data becomes corrupted. By default, SnakeBite creates 'RevertChanges.MGSVPreset' before a mod installation/uninstallation, so you can easily undo an action if it caused a critical error." +
                 "\n\nHowever, saving a large number of mods needs a bit of time and storage space, so you can choose to skip this option by unchecking the 'Save RevertChanges.MGSVPreset' checkbox in the Settings menu.\nRevertChanges.MGSVPreset is saved to your Game Directory.", "Mod Preset Files", MessageBoxButtons.OK, MessageBoxIcon.Question);
@@ -571,9 +558,6 @@ namespace SnakeBite
 
             Properties.Settings.Default.Save();
         }
-
-        // The ModDescriptionPage would become slightly distorted over time using panelContent.Controls to clear or add a new page
-        // I'm not sure why it does this exactly (something to do with the form resizing?), but setting page visibility is more reliable
         private void SetVisiblePage(UserControl visiblePage)
         {
             UserControl[] pages = { log, modDescription, noInstallNotice };

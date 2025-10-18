@@ -2,15 +2,7 @@
 {
     partial class formInstallOrder
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -21,11 +13,6 @@
         }
 
         #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             this.buttonAdd = new System.Windows.Forms.Button();
@@ -41,9 +28,6 @@
             this.labelConflictCount = new System.Windows.Forms.Label();
             this.labelExplainConflict = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
-            // buttonAdd
-            // 
             this.buttonAdd.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonAdd.Location = new System.Drawing.Point(12, 438);
             this.buttonAdd.Name = "buttonAdd";
@@ -52,9 +36,6 @@
             this.buttonAdd.Text = "Add More Mods...";
             this.buttonAdd.UseVisualStyleBackColor = true;
             this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
-            // 
-            // buttonRemove
-            // 
             this.buttonRemove.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonRemove.Location = new System.Drawing.Point(12, 465);
             this.buttonRemove.Name = "buttonRemove";
@@ -63,9 +44,6 @@
             this.buttonRemove.Text = "Remove Selected Mod";
             this.buttonRemove.UseVisualStyleBackColor = true;
             this.buttonRemove.Click += new System.EventHandler(this.buttonRemove_Click);
-            // 
-            // buttonContinue
-            // 
             this.buttonContinue.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonContinue.Location = new System.Drawing.Point(522, 438);
             this.buttonContinue.Name = "buttonContinue";
@@ -74,9 +52,6 @@
             this.buttonContinue.Text = "Continue Installation";
             this.buttonContinue.UseVisualStyleBackColor = true;
             this.buttonContinue.Click += new System.EventHandler(this.buttonContinue_Click);
-            // 
-            // buttonUp
-            // 
             this.buttonUp.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonUp.Location = new System.Drawing.Point(243, 36);
             this.buttonUp.Name = "buttonUp";
@@ -85,9 +60,6 @@
             this.buttonUp.Text = "▲";
             this.buttonUp.UseVisualStyleBackColor = true;
             this.buttonUp.Click += new System.EventHandler(this.buttonUp_Click);
-            // 
-            // buttonDown
-            // 
             this.buttonDown.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonDown.Location = new System.Drawing.Point(243, 88);
             this.buttonDown.Name = "buttonDown";
@@ -96,9 +68,6 @@
             this.buttonDown.Text = "▼";
             this.buttonDown.UseVisualStyleBackColor = true;
             this.buttonDown.Click += new System.EventHandler(this.buttonDown_Click);
-            // 
-            // labelModCount
-            // 
             this.labelModCount.BackColor = System.Drawing.Color.Silver;
             this.labelModCount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.labelModCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -108,18 +77,12 @@
             this.labelModCount.TabIndex = 8;
             this.labelModCount.Text = "Total Count: 0";
             this.labelModCount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // panelContent
-            // 
             this.panelContent.BackColor = System.Drawing.Color.Transparent;
             this.panelContent.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelContent.Location = new System.Drawing.Point(293, 9);
             this.panelContent.Name = "panelContent";
             this.panelContent.Size = new System.Drawing.Size(400, 424);
             this.panelContent.TabIndex = 9;
-            // 
-            // labelInstallOrder
-            // 
             this.labelInstallOrder.BackColor = System.Drawing.Color.Silver;
             this.labelInstallOrder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.labelInstallOrder.Font = new System.Drawing.Font("Segoe UI", 9.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -129,9 +92,6 @@
             this.labelInstallOrder.TabIndex = 11;
             this.labelInstallOrder.Text = "Installation Order";
             this.labelInstallOrder.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // listInstallOrder
-            // 
             this.listInstallOrder.BackColor = System.Drawing.Color.Silver;
             this.listInstallOrder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.listInstallOrder.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -149,13 +109,7 @@
             this.listInstallOrder.UseCompatibleStateImageBehavior = false;
             this.listInstallOrder.View = System.Windows.Forms.View.Details;
             this.listInstallOrder.SelectedIndexChanged += new System.EventHandler(this.listInstallOrder_SelectedIndexChanged);
-            // 
-            // columnModNames
-            // 
             this.columnModNames.Width = 226;
-            // 
-            // labelConflictCount
-            // 
             this.labelConflictCount.BackColor = System.Drawing.Color.Silver;
             this.labelConflictCount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.labelConflictCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
@@ -165,9 +119,6 @@
             this.labelConflictCount.TabIndex = 13;
             this.labelConflictCount.Text = "Conflicts Detected: 0";
             this.labelConflictCount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // labelExplainConflict
-            // 
             this.labelExplainConflict.BackColor = System.Drawing.Color.LightGray;
             this.labelExplainConflict.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.labelExplainConflict.Cursor = System.Windows.Forms.Cursors.Help;
@@ -180,9 +131,6 @@
             this.labelExplainConflict.Text = "?";
             this.labelExplainConflict.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.labelExplainConflict.Click += new System.EventHandler(this.labelExplainConflict_Click);
-            // 
-            // formInstallOrder
-            // 
             this.AcceptButton = this.buttonContinue;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;

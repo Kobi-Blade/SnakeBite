@@ -10,9 +10,9 @@ namespace SnakeBite.ModPages
             InitializeComponent();
         }
 
-        private void linkLabelSnakeBiteModsList_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) // opens the [SBWM] search filter on nexus mods, randomly sorted.
+        private void linkLabelSnakeBiteModsList_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            _ = Process.Start(GamePaths.SBWMSearchURLPath);
+            Process.Start(GamePaths.SBWMSearchURLPath);
         }
     }
 }

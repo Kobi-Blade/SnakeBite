@@ -26,10 +26,10 @@ namespace SnakeBite
                     {
                         Debug.LogLine(string.Format("[Error] Exception message '{0}'", e.Error.ToString()));
                         Debug.LogLine(string.Format("[Error] Exception StackTrace '{0}'", e.Error.StackTrace));
-                        _ = logWindow.Invoke((MethodInvoker)delegate { logWindow.Text = string.Format("Error during process :'{0}'", ProgressText); });
+                        logWindow.Invoke((MethodInvoker)delegate { logWindow.Text = string.Format("Error during process :'{0}'", ProgressText); });
 
-                        _ = MessageBox.Show(string.Format("Exception :'{0}'\r\nCheck SnakeBites log for more info.", e.Error.ToString()), string.Format("Error during process :'{0}'", ProgressText), MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        _ = progressWindow.Invoke((MethodInvoker)delegate { progressWindow.Close(); });
+                        MessageBox.Show(string.Format("Exception :'{0}'\r\nCheck SnakeBites log for more info.", e.Error.ToString()), string.Format("Error during process :'{0}'", ProgressText), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        progressWindow.Invoke((MethodInvoker)delegate { progressWindow.Close(); });
                     }
                     else if (e.Cancelled)
                     {
@@ -37,14 +37,14 @@ namespace SnakeBite
                     }
                     else
                     {
-                        _ = progressWindow.Invoke((MethodInvoker)delegate { progressWindow.Close(); });
+                        progressWindow.Invoke((MethodInvoker)delegate { progressWindow.Close(); });
                     }
                     progressWorker.Dispose();
                 }
              );
 
             progressWorker.RunWorkerAsync();
-            _ = progressWindow.ShowDialog();
+            progressWindow.ShowDialog();
         }
     }
 }

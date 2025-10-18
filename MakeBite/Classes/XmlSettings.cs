@@ -71,7 +71,6 @@ namespace SnakeBite
 
         public void ReadFromFile(string Filename)
         {
-            // Read mod metadata from xml
 
             if (!File.Exists(Filename))
             {
@@ -123,7 +122,6 @@ namespace SnakeBite
 
         public void SaveToFile(string Filename)
         {
-            // Write mod metadata to XML
 
             if (File.Exists(Filename))
             {

@@ -18,7 +18,7 @@ namespace SnakeBite
             RemoveOldFormatLogs();
             if (!Directory.Exists(logDir))
             {
-                _ = Directory.CreateDirectory(logDir);
+                Directory.CreateDirectory(logDir);
             }
 
             string logFilePath = Path.Combine(logDir, LOG_FILE_TXT);
@@ -34,7 +34,7 @@ namespace SnakeBite
         }
         private static void RemoveOldFormatLogs()
         {
-            if (File.Exists(LOG_FILE_PREV + TXT_EXT)) // old format in root install directory
+            if (File.Exists(LOG_FILE_PREV + TXT_EXT))
             {
                 File.Delete(LOG_FILE_PREV + TXT_EXT);
             }
@@ -48,7 +48,7 @@ namespace SnakeBite
         {
             if (i < max)
             {
-                string logPrevPath = Path.Combine(logDir, $"{LOG_FILE_PREV}.{i}{TXT_EXT}"); // assumption: logdir already exists
+                string logPrevPath = Path.Combine(logDir, $"{LOG_FILE_PREV}.{i}{TXT_EXT}");
                 string logPrevIncrementedPath = Path.Combine(logDir, $"{LOG_FILE_PREV}.{i + 1}{TXT_EXT}");
 
                 RecursiveCopyLogs(i + 1, max);
@@ -68,13 +68,13 @@ namespace SnakeBite
                 string logPrevPath = Path.Combine(logDir, $"{LOG_FILE_PREV}.{i}{TXT_EXT}");
                 if (File.Exists(logPrevPath))
                 {
-                    _ = Process.Start(logPrevPath);
+                    Process.Start(logPrevPath);
                 }
             }
             string logFilePath = Path.Combine(logDir, LOG_FILE_TXT);
             if (File.Exists(logFilePath))
             {
-                _ = Process.Start(logFilePath);
+                Process.Start(logFilePath);
             }
         }
 
@@ -82,12 +82,12 @@ namespace SnakeBite
         {
             if (!Directory.Exists(logDir))
             {
-                _ = Directory.CreateDirectory(logDir);
+                Directory.CreateDirectory(logDir);
             }
 
             try
             {
-                _ = Process.Start(logDir);
+                Process.Start(logDir);
             }
             catch
             {
@@ -97,11 +97,10 @@ namespace SnakeBite
 
         public static void LogLine(string Text, LogLevel LogLevel = LogLevel.All)
         {
-            //if (LogLevel == 0) return;
 
             if (!Directory.Exists(logDir))
             {
-                _ = Directory.CreateDirectory(logDir);
+                Directory.CreateDirectory(logDir);
             }
 
             string logFilePath = Path.Combine(logDir, LOG_FILE_TXT);

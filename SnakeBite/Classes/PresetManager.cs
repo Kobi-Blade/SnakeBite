@@ -10,14 +10,10 @@ namespace SnakeBite
 {
     internal static class PresetManager
     {
-
-        /// <summary>
-        /// Creates a .MGSVPreset file for the mods that are currently installed
-        /// </summary>
         public static bool SavePreset(string presetFilePath)
         {
             bool success = false;
-            _ = Directory.CreateDirectory("_build\\master\\0");
+            Directory.CreateDirectory("_build\\master\\0");
             SettingsManager manager = new SettingsManager(SnakeBiteSettings);
             string presetName = Path.GetFileName(presetFilePath);
             Debug.LogLine($"[SavePreset] Saving {presetName}...", Debug.LogLevel.Basic);
@@ -30,7 +26,7 @@ namespace SnakeBite
                     string DestDir = "_build\\" + Path.GetDirectoryName(gameFile);
                     string fileName = Path.GetFileName(gameFile);
 
-                    _ = Directory.CreateDirectory(DestDir);
+                    Directory.CreateDirectory(DestDir);
                     if (File.Exists(sourcePath)) { Debug.LogLine(string.Format("[SavePreset] Copying to build directory: {0}", gameFile), Debug.LogLevel.Basic); File.Copy(sourcePath, Path.Combine(DestDir, fileName), true); }
                     else
                     {
@@ -59,7 +55,7 @@ namespace SnakeBite
             }
             catch (Exception e)
             {
-                _ = MessageBox.Show("An error has occurred and the preset was not saved.\nException: " + e);
+                MessageBox.Show("An error has occurred and the preset was not saved.\nException: " + e);
             }
             finally
             {
@@ -68,10 +64,6 @@ namespace SnakeBite
 
             return success;
         }
-
-        /// <summary>
-        /// overwrites existing mods with the set of mods stored in the .MGSVPreset file
-        /// </summary>
         public static bool LoadPreset(string presetFilePath)
         {
             bool panicMode = !File.Exists(ZeroPath) || !File.Exists(OnePath) || !File.Exists(SnakeBiteSettings);
@@ -96,7 +88,7 @@ namespace SnakeBite
                     foreach (string gameFile in existingExternalFiles)
                     {
                         string gameFilePath = Path.Combine(GameDir, Tools.ToWinPath(gameFile));
-                        if (File.Exists(gameFilePath)) // only stores backups of managed files
+                        if (File.Exists(gameFilePath))
                         {
                             Debug.LogLine(string.Format("[LoadPreset] Storing backup: {0}", gameFile), Debug.LogLevel.Basic);
                             fileEntryDirs.Add(Path.GetDirectoryName(gameFilePath));
@@ -131,7 +123,7 @@ namespace SnakeBite
             }
             catch (Exception e)
             {
-                _ = MessageBox.Show("An error has occurred and the preset was not imported.\nException: " + e);
+                MessageBox.Show("An error has occurred and the preset was not imported.\nException: " + e);
                 if (!panicMode)
                 {
                     Debug.LogLine("[LoadPreset] Restoring backup files", Debug.LogLevel.Basic);

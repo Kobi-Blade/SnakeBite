@@ -48,7 +48,6 @@ namespace SnakeBite.SetupWizard
                     break;
 
                 case 0:
-                    // move to find installation
                     buttonBack.Visible = true;
                     buttonSkip.Visible = false;
                     contentPanel.Controls.Clear();
@@ -60,16 +59,15 @@ namespace SnakeBite.SetupWizard
                     manager = new SettingsManager(SnakeBiteSettings);
                     if (!manager.ValidInstallPath)
                     {
-                        _ = MessageBox.Show("Please select a valid installation directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Please select a valid installation directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
                     if (!BackupManager.GameFilesExist())
                     {
-                        _ = MessageBox.Show("Some game data appears to be missing. If you have just revalidated the game data, please wait for Steam to finish downloading the new files before continuing.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Some game data appears to be missing. If you have just revalidated the game data, please wait for Steam to finish downloading the new files before continuing.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
-                    // show create backup page, without processing panel, enable skip
                     createBackupPage.panelProcessing.Visible = false;
                     contentPanel.Controls.Clear();
                     contentPanel.Controls.Add(createBackupPage);
@@ -80,7 +78,7 @@ namespace SnakeBite.SetupWizard
 
                 case 2:
                     manager = new SettingsManager(SnakeBiteSettings);
-                    if (!(manager.IsVanilla0001Size() || manager.IsVanilla0001DatHash()) && (SettingsManager.IntendedGameVersion >= ModManager.GetMGSVersion())) // not the right 00/01 and there hasn't been a game update
+                    if (!(manager.IsVanilla0001Size() || manager.IsVanilla0001DatHash()) && (SettingsManager.IntendedGameVersion >= ModManager.GetMGSVersion()))
                     {
                         DialogResult overWrite = MessageBox.Show(string.Format("Your existing game data contains unexpected filesizes, and is likely already modified or predates Game Version {0}." +
                             "\n\nIt is recommended that you do NOT store these files as backups, unless you are absolutely certain that they can reliably restore your game to a safe state!" +
@@ -107,15 +105,11 @@ namespace SnakeBite.SetupWizard
                             return;
                         }
                     }
-
-                    // create backup
                     buttonSkip.Visible = false;
                     buttonBack.Visible = false;
                     buttonNext.Enabled = false;
                     createBackupPage.panelProcessing.Visible = true;
                     Application.UseWaitCursor = true;
-
-                    // do backup processing
                     BackgroundWorker backupProcessor = new BackgroundWorker();
                     backupProcessor.DoWork += new DoWorkEventHandler(BackupManager.backgroundWorker_CopyBackupFiles);
                     backupProcessor.WorkerReportsProgress = true;
@@ -127,8 +121,6 @@ namespace SnakeBite.SetupWizard
                         Application.DoEvents();
                         Thread.Sleep(10);
                     }
-
-                    // move to merge dats
                     mergeDatPage.panelProcessing.Visible = false;
                     Application.UseWaitCursor = false;
 
@@ -140,7 +132,6 @@ namespace SnakeBite.SetupWizard
                     break;
 
                 case 3:
-                    // move 00/01 to a_chunk/a_texture
                     buttonNext.Enabled = false;
                     buttonBack.Visible = false;
                     Tag = "noclose";

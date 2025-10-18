@@ -2,15 +2,7 @@
 {
     partial class formLauncher
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -21,11 +13,6 @@
         }
 
         #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formLauncher));
@@ -36,9 +23,6 @@
             this.labelVersion = new System.Windows.Forms.Label();
             this.labelClose = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
-            // buttonStartGame
-            // 
             this.buttonStartGame.BackColor = System.Drawing.Color.Transparent;
             this.buttonStartGame.ForeColor = System.Drawing.Color.Black;
             this.buttonStartGame.Location = new System.Drawing.Point(52, 219);
@@ -50,9 +34,6 @@
             this.buttonStartGame.Click += new System.EventHandler(this.buttonStartGame_Click);
             this.buttonStartGame.MouseEnter += new System.EventHandler(this.OnMouseEnter);
             this.buttonStartGame.MouseLeave += new System.EventHandler(this.OnMouseExit);
-            // 
-            // buttonMods
-            // 
             this.buttonMods.BackColor = System.Drawing.Color.Transparent;
             this.buttonMods.ForeColor = System.Drawing.Color.Black;
             this.buttonMods.Location = new System.Drawing.Point(52, 255);
@@ -64,9 +45,6 @@
             this.buttonMods.Click += new System.EventHandler(this.buttonMods_Click);
             this.buttonMods.MouseEnter += new System.EventHandler(this.OnMouseEnter);
             this.buttonMods.MouseLeave += new System.EventHandler(this.OnMouseExit);
-            // 
-            // buttonSettings
-            // 
             this.buttonSettings.BackColor = System.Drawing.Color.Transparent;
             this.buttonSettings.ForeColor = System.Drawing.Color.Black;
             this.buttonSettings.Location = new System.Drawing.Point(52, 291);
@@ -78,9 +56,6 @@
             this.buttonSettings.Click += new System.EventHandler(this.buttonSettings_Click);
             this.buttonSettings.MouseEnter += new System.EventHandler(this.OnMouseEnter);
             this.buttonSettings.MouseLeave += new System.EventHandler(this.OnMouseExit);
-            // 
-            // buttonExit
-            // 
             this.buttonExit.BackColor = System.Drawing.Color.Transparent;
             this.buttonExit.ForeColor = System.Drawing.Color.Black;
             this.buttonExit.Location = new System.Drawing.Point(52, 327);
@@ -92,9 +67,6 @@
             this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             this.buttonExit.MouseEnter += new System.EventHandler(this.OnMouseEnter);
             this.buttonExit.MouseLeave += new System.EventHandler(this.OnMouseExit);
-            // 
-            // labelVersion
-            // 
             this.labelVersion.AutoSize = true;
             this.labelVersion.BackColor = System.Drawing.Color.Transparent;
             this.labelVersion.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -108,9 +80,6 @@
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.labelVersion.TextChanged += new System.EventHandler(this.labelVersion_TextChanged);
             this.labelVersion.DoubleClick += new System.EventHandler(this.labelVersion_DoubleClick);
-            // 
-            // labelClose
-            // 
             this.labelClose.AutoSize = true;
             this.labelClose.BackColor = System.Drawing.Color.Transparent;
             this.labelClose.ForeColor = System.Drawing.Color.White;
@@ -120,9 +89,6 @@
             this.labelClose.TabIndex = 6;
             this.labelClose.Text = "x";
             this.labelClose.Click += new System.EventHandler(this.labelClose_Click);
-            // 
-            // formLauncher
-            // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackgroundImage = global::SnakeBite.Properties.Resources.LAUNCHERBGv2;
             this.ClientSize = new System.Drawing.Size(768, 432);

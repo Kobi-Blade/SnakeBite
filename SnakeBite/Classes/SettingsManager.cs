@@ -11,15 +11,13 @@ namespace SnakeBite
 
     public class SettingsManager
     {
-        // GAMEVERSION > You will have to update everything here when the game updates, search for GAMEVERSION to find other areas than need to be updated
-        internal static string vanillaDatHash = "36DCF52AD8EE498F6FCF529976D7C8E11240EF2F06D9D193851C5AE45D8D46BF"; //expected original hash for 1.0.15.2 // To generate this run snakebite and toggle mods off, then look for the latest '[UpdateDatHash] Updated 00/01 dat hash to' in the log or grab it from the snakebite.xml
+        internal static string vanillaDatHash = "36DCF52AD8EE498F6FCF529976D7C8E11240EF2F06D9D193851C5AE45D8D46BF";
         internal static Version IntendedGameVersion = new Version(1, 0, 15, 3);
 
-        internal const int MAXZEROSIZE = 496340000; // ballpark estimates of vanilla archive filesizes. max/min by 10k? morbid do you want to document your reasoning on this?
+        internal const int MAXZEROSIZE = 496340000;
         internal const int MINZEROSIZE = 496320000;
         internal const int MAXONESIZE = 264940000;
         internal const int MINONESIZE = 264920000;
-        // GAMEVERSION <
 
         public string xmlFilePath;
 
@@ -43,7 +41,7 @@ namespace SnakeBite
             return fpkList;
         }
 
-        internal void updateQarFileNames() // snakebite supports automatically updating filenames before they're installed, but will need to update old game settings from the prior version. 1-time-check per SB update
+        internal void updateQarFileNames()
         {
             Settings settings = new Settings();
             settings.LoadFrom(xmlFilePath);
@@ -187,7 +185,7 @@ namespace SnakeBite
             Settings settings = new Settings();
             settings.LoadFrom(xmlFilePath);
             ModEntry remMod = settings.ModEntries.Find(entry => entry.Name == Mod.Name);
-            _ = settings.ModEntries.Remove(remMod);
+            settings.ModEntries.Remove(remMod);
             settings.SaveTo(xmlFilePath);
         }
 
@@ -239,20 +237,18 @@ namespace SnakeBite
         {
             Settings settings = new Settings();
             settings.LoadFrom(xmlFilePath);
-
-            // Hash 01.dat and update settings file
             string datHash = Tools.GetMd5Hash(ZeroPath) + Tools.GetMd5Hash(OnePath);
             settings.GameData.DatHash = datHash;
             Debug.LogLine(string.Format("[UpdateDatHash] Updated 00/01 dat hash to: {0}", datHash), Debug.LogLevel.All);
             settings.SaveTo(xmlFilePath);
         }
 
-        public bool IsVanilla0001DatHash() //shouldn't be in settingsmanager
+        public bool IsVanilla0001DatHash()
         {
             return vanillaDatHash.Equals(Tools.GetMd5Hash(ZeroPath) + Tools.GetMd5Hash(OnePath));
         }
 
-        public bool IsVanilla0001Size() //shouldn't be in settingsmanager
+        public bool IsVanilla0001Size()
         {
             long zeroSize = new System.IO.FileInfo(ZeroPath).Length;
             long oneSize = new System.IO.FileInfo(OnePath).Length;
@@ -266,10 +262,10 @@ namespace SnakeBite
             return false;
         }
 
-        public bool IsUpToDate(Version ModVersion) //shouldn't be in settingsmanager
+        public bool IsUpToDate(Version ModVersion)
         {
             bool isUpToDate = ModManager.GetMGSVersion() == ModVersion;
-            bool isSpecialCase = ModVersion == new Version(0, 0, 0, 0) || ModVersion == new Version(1, 0, 15, 2); // GAMEVERSION 1.0.15.2 vs .3 was just an exe change, so allow .2
+            bool isSpecialCase = ModVersion == new Version(0, 0, 0, 0) || ModVersion == new Version(1, 0, 15, 2);
             return isUpToDate || isSpecialCase;
         }
 
@@ -301,8 +297,6 @@ namespace SnakeBite
             Debug.LogLine(string.Format("[ValidateDatHash] could not find snakebite.xml"), Debug.LogLevel.All);
             return false;
         }
-
-        // Checks the saved InstallPath variable for the existence of MGSVTPP.exe
         public bool ValidInstallPath
         {
             get
@@ -337,8 +331,7 @@ namespace SnakeBite
 
         public void SaveTo(string xmlFilePath)
         {
-            // Write settings to XML
-            _ = Directory.CreateDirectory(Path.GetDirectoryName(xmlFilePath));
+            Directory.CreateDirectory(Path.GetDirectoryName(xmlFilePath));
             using (FileStream s = new FileStream(xmlFilePath, FileMode.Create))
             {
                 XmlSerializer x = new XmlSerializer(typeof(Settings), new[] { typeof(Settings) });
@@ -354,7 +347,6 @@ namespace SnakeBite
 
         public void LoadFrom(string xmlFilePath)
         {
-            // Load settings from XML
 
             if (!File.Exists(xmlFilePath))
             {
@@ -389,16 +381,10 @@ namespace SnakeBite
 
         [XmlAttribute("DatHash")]
         public string DatHash { get; set; }
-
-        //Entries of files in mod qar (ex 00,01.dat)
         [XmlArray("QarEntries")]
         public List<ModQarEntry> GameQarEntries { get; set; } = new List<ModQarEntry>();
-
-        //Entries of files inside fpks
         [XmlArray("FpkEntries")]
         public List<ModFpkEntry> GameFpkEntries { get; set; } = new List<ModFpkEntry>();
-
-        //Entries of files in GameDir (ex MGS_TPP)
         [XmlArray("FileEntries")]
         public List<ModFileEntry> GameFileEntries { get; set; } = new List<ModFileEntry>();
     }
@@ -450,7 +436,6 @@ namespace SnakeBite
 
         public void ReadFromFile(string Filename)
         {
-            // Read mod metadata from xml
 
             if (!File.Exists(Filename))
             {
@@ -481,7 +466,6 @@ namespace SnakeBite
 
         public void SaveToFile(string Filename)
         {
-            // Write mod metadata to XML
 
             if (File.Exists(Filename))
             {
@@ -513,8 +497,6 @@ namespace SnakeBite
 
         [XmlAttribute("Compressed")]
         public bool Compressed { get; set; }
-
-        //Added by MakeBite, currently unused
         [XmlAttribute("ContentHash")]
         public string ContentHash { get; set; }
 
@@ -533,12 +515,8 @@ namespace SnakeBite
 
         [XmlAttribute("FilePath")]
         public string FilePath { get; set; }
-
-        //Added by MakeBite, currently unused
         [XmlAttribute("ContentHash")]
         public string ContentHash { get; set; }
-
-        //TODO: currently inaccurate
         [XmlAttribute("SourceType")]
         public FileSource SourceType { get; set; }
 

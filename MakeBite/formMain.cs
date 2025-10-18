@@ -35,10 +35,8 @@ namespace MakeBite
 
         private void PopulateBoxes(string modPath)
         {
-            // unpack existing fpks if extracted folders don't exist
             foreach (string fpkFile in Directory.GetFiles(modPath, "*.fpk*", SearchOption.AllDirectories))
             {
-                //tex chunk0\Assets\tpp\pack\collectible\common\col_common_tpp_fpk\Assets\tpp\pack\resident\resident00.fpkl is the only fpkl, don't know what a fpkl is, but gzcore crashes on it. also checks for xml in case user opened the fpk with gzstool and produced a xml file
                 if (fpkFile.EndsWith(".fpkl") || fpkFile.EndsWith(".xml"))
                 {
                     continue;
@@ -47,18 +45,16 @@ namespace MakeBite
                 string fpkDir = Path.Combine(Path.GetDirectoryName(fpkFile), Path.GetFileName(fpkFile).Replace(".", "_"));
                 if (!Directory.Exists(fpkDir))
                 {
-                    //extract fpk
-                    _ = GzsLib.ExtractArchive<FpkFile>(fpkFile, fpkDir);
+                    GzsLib.ExtractArchive<FpkFile>(fpkFile, fpkDir);
                 }
             }
 
             foreach (string modFile in Directory.GetFiles(modPath, "*.*", SearchOption.AllDirectories))
             {
                 string filePath = modFile.Substring(modPath.Length).Replace("\\", "/");
-                //GOTCHA: IsValidFile is only roughly accurate for this purpose, but listModFiles is only currently being used as non interactive user feedback so no big issue.
                 if ((Tools.IsValidFile(filePath) || filePath.Contains("/GameDir")) && filePath != "/metadata.xml")
                 {
-                    _ = listModFiles.Items.Add(filePath);
+                    listModFiles.Items.Add(filePath);
                 }
             }
 
@@ -85,7 +81,7 @@ namespace MakeBite
                 }
                 if (!foundVersion)
                 {
-                    _ = comboForVersion.Items.Add(mgsvVersion);
+                    comboForVersion.Items.Add(mgsvVersion);
                     comboForVersion.Text = mgsvVersion;
                 }
             }
@@ -114,7 +110,7 @@ namespace MakeBite
 
             DoBuild(modPath);
 
-            _ = MessageBox.Show("Build completed.", "MakeBite", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Build completed.", "MakeBite", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void DoBuild(string outputFilePath)
@@ -203,23 +199,19 @@ namespace MakeBite
             textModPath.Text = modPath;
             comboForVersion.SelectedIndex = comboForVersion.Items.Count - 1;
 
-            if (Directory.Exists(modPath)) // if loaded folder exists
+            if (Directory.Exists(modPath))
             {
                 PopulateBoxes(modPath);
-                if (args.Length == 2)      // if command line was specified
+                if (args.Length == 2)
                 {
-                    //tex better, but will be a breaking change for any authors used to the current output path\filename
-                    //string folderName = Path.GetFileName(modPath.TrimEnd(Path.DirectorySeparatorChar));
-                    //string parentPath = Directory.GetParent(modPath).ToString();
-                    //DoBuild($"{parentPath}\\{folderName}.mgsv");
 
                     DoBuild(Path.Combine(modPath, "mod.mgsv"));
-                    Application.Exit();    // build and exit
+                    Application.Exit();
                 }
             }
             else
             {
-                if (args.Length == 1)      // if folder doesnt exist reset path
+                if (args.Length == 1)
                 {
                     Properties.Settings.Default.LastModDir = string.Empty;
                     Properties.Settings.Default.Save();

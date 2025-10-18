@@ -54,7 +54,7 @@ namespace SnakeBite
             try
             {
                 manager.DeleteSettings();
-                _ = MessageBox.Show("Backups restored. SnakeBite will now close.", "SnakeBite", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Backups restored. SnakeBite will now close.", "SnakeBite", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch { }
             Application.Exit();
@@ -62,7 +62,6 @@ namespace SnakeBite
 
         private void UpdateModToggle()
         {
-            // Enable/disable mods button
 
             if (BackupManager.ModsDisabled())
             {
@@ -82,14 +81,14 @@ namespace SnakeBite
             {
                 Tag = "closable"
             };
-            _ = setupWizard.ShowDialog(Application.OpenForms[0]);
+            setupWizard.ShowDialog(Application.OpenForms[0]);
             UpdateModToggle();
             CheckBackupState();
         }
 
         private void linkNexusLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            _ = Process.Start(labelNexusLink.Text);
+            Process.Start(labelNexusLink.Text);
         }
 
         private void buttonFindMGSV_Click(object sender, EventArgs e)
@@ -110,49 +109,20 @@ namespace SnakeBite
                 textInstallPath.Text = filePath;
                 Properties.Settings.Default.InstallPath = filePath;
                 Properties.Settings.Default.Save();
-                _ = MessageBox.Show("SnakeBite will now restart.", "SnakeBite", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                _ = System.Diagnostics.Process.Start("SnakeBite.exe");
+                MessageBox.Show("SnakeBite will now restart.", "SnakeBite", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                System.Diagnostics.Process.Start("SnakeBite.exe");
                 Application.Exit();
             }
         }
 
         private void formSettings_Load(object sender, EventArgs e)
         {
-            // Set installation path textbox
             textInstallPath.Text = Properties.Settings.Default.InstallPath;
             checkEnableSound.Checked = Properties.Settings.Default.EnableSound;
             checkBoxSaveRevertPreset.Checked = Properties.Settings.Default.AutosaveRevertPreset;
             checkBoxCloseOnStart.Checked = Properties.Settings.Default.CloseSnakeBiteOnLaunch;
-            //listThemes.SelectedIndex = 0;
             UpdateModToggle();
             CheckBackupState();
-
-            /*
-            if (Directory.Exists("Themes"))
-            {
-                foreach(string file in Directory.GetFiles("Themes", "*.sbtheme"))
-                {
-                    // Read theme names
-                    ZipFile themeZip = new ZipFile(file);
-                    var themeEntry = themeZip.FindEntry("Theme.xml", true);
-                    if(themeEntry >= 0)
-                    {
-                        var themeStream = themeZip.GetInputStream(themeZip[themeEntry]);
-                        using (StreamReader themeReader = new StreamReader(themeStream))
-                        {
-                            XmlSerializer themeSerializer = new XmlSerializer(typeof(ThemeXml.Theme));
-                            var theme = (ThemeXml.Theme)themeSerializer.Deserialize(themeReader);
-                            listThemes.Items.Add(theme.Name);
-                            themeFiles.Add(file);
-                            if (Properties.Settings.Default.ThemeFile == file) listThemes.SelectedIndex = themeFiles.Count-1;
-                        }
-                    }
-                }
-            } else
-            {
-                tabControl.TabPages.RemoveAt(1);
-            }
-            */
         }
 
         private void checkEnableSound_CheckedChanged(object sender, EventArgs e)
@@ -166,18 +136,6 @@ namespace SnakeBite
             Properties.Settings.Default.AutosaveRevertPreset = checkBoxSaveRevertPreset.Checked;
             Properties.Settings.Default.Save();
         }
-
-        /*
-        private void buttonSetTheme_Click(object sender, EventArgs e)
-        {
-            Properties.Settings.Default.ThemeFile = themeFiles[listThemes.SelectedIndex];
-            Properties.Settings.Default.Save();
-
-            var o = Owner as formLauncher;
-            o.SetupTheme();
-            o.Refresh();
-        }
-        */
 
         private void buttonOpenLogDir_Click(object sender, EventArgs e)
         {

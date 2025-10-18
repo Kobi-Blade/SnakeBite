@@ -18,10 +18,7 @@ namespace SnakeBite
 
         private void formSelectModelTarget_Load(object sender, EventArgs e)
         {
-            // Set form text
             labelFormText.Text = formText;
-
-            // Create new radio button for each model passed to constructor
             for (int i = 0; i < modelNames.Count; i++)
             {
                 groupModelSelect.Controls.Add(new RadioButton() { Text = modelNames[i], Top = (i * 20) + 12, Left = 12, Width = groupModelSelect.Width - 24, Tag = i });
@@ -35,7 +32,7 @@ namespace SnakeBite
 
             RadioButton r = groupModelSelect.Controls[0] as RadioButton;
             r.Checked = true;
-            _ = buttonConfirm.Focus();
+            buttonConfirm.Focus();
         }
 
         private void buttonConfirm_Click(object sender, EventArgs e)

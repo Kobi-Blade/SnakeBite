@@ -2,15 +2,7 @@
 {
     partial class LogPage
     {
-        /// <summary> 
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
-
-        /// <summary> 
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -21,20 +13,12 @@
         }
 
         #region Component Designer generated code
-
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             this.textLog = new System.Windows.Forms.TextBox();
             this.panelLog = new System.Windows.Forms.Panel();
             this.panelLog.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // textLog
-            // 
             this.textLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -47,9 +31,6 @@
             this.textLog.Size = new System.Drawing.Size(394, 418);
             this.textLog.TabIndex = 1;
             this.textLog.TextChanged += new System.EventHandler(this.textLog_TextChanged);
-            // 
-            // panelLog
-            // 
             this.panelLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -59,9 +40,6 @@
             this.panelLog.Name = "panelLog";
             this.panelLog.Size = new System.Drawing.Size(400, 424);
             this.panelLog.TabIndex = 2;
-            // 
-            // LogPage
-            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panelLog);

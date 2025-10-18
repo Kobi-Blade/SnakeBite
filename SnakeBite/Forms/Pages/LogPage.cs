@@ -7,7 +7,6 @@ namespace SnakeBite.ModPages
     public partial class LogPage : UserControl
     {
         public StringBuilder logStringBuilder = new StringBuilder();
-        //DEBUGNOWprivate System.Threading.Timer timer;
         private volatile bool stopTimer = false;
 
         private readonly object thisLock = new object();
@@ -19,14 +18,6 @@ namespace SnakeBite.ModPages
             logStringBuilder.Capacity = 200 * 6000;
 
             Console.SetOut(new MultiTextWriter(new LogTextBoxWriter(this), Console.Out));
-
-            //timer = new System.Threading.Timer(UpdateProperty, null, 400, 400);
-            /* //DEBUGNOW
-            this.SetStyle(
-              ControlStyles.AllPaintingInWmPaint |
-              ControlStyles.UserPaint |
-              ControlStyles.DoubleBuffer, true);
-              */
         }
 
         private delegate void WriteTextBox();
@@ -37,7 +28,7 @@ namespace SnakeBite.ModPages
             {
                 if (textLog.InvokeRequired)
                 {
-                    _ = textLog.Invoke((MethodInvoker)delegate { UpdateProperty(state); });
+                    textLog.Invoke((MethodInvoker)delegate { UpdateProperty(state); });
                 }
                 else
                 {
@@ -53,7 +44,7 @@ namespace SnakeBite.ModPages
         {
             if (textLog.InvokeRequired)
             {
-                _ = textLog.Invoke((MethodInvoker)delegate { UpdateLog(); });
+                textLog.Invoke((MethodInvoker)delegate { UpdateLog(); });
             }
             else
             {
@@ -66,18 +57,16 @@ namespace SnakeBite.ModPages
 
         public void ClearPage()
         {
-            _ = logStringBuilder.Clear();
+            logStringBuilder.Clear();
         }
 
         private void formLog_FormClosing(object sender, FormClosingEventArgs e)
         {
             stopTimer = true;
-            //  timer.Change(Timeout.Infinite, Timeout.Infinite);
         }
 
         private void formLog_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //DEBUGNOW  timer.Dispose();
         }
 
         private void textLog_TextChanged(object sender, EventArgs e)

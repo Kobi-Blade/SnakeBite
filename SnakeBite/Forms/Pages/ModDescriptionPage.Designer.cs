@@ -2,15 +2,7 @@
 {
     partial class ModDescriptionPage
     {
-        /// <summary> 
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
-
-        /// <summary> 
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -21,11 +13,6 @@
         }
 
         #region Component Designer generated code
-
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             this.panelModDescription = new System.Windows.Forms.Panel();
@@ -36,9 +23,6 @@
             this.labelModName = new System.Windows.Forms.Label();
             this.panelModDescription.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // panelModDescription
-            // 
             this.panelModDescription.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelModDescription.BackColor = System.Drawing.Color.DarkGray;
             this.panelModDescription.Controls.Add(this.labelVersionWarning);
@@ -51,9 +35,6 @@
             this.panelModDescription.Name = "panelModDescription";
             this.panelModDescription.Size = new System.Drawing.Size(400, 424);
             this.panelModDescription.TabIndex = 11;
-            // 
-            // labelVersionWarning
-            // 
             this.labelVersionWarning.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.labelVersionWarning.BackColor = System.Drawing.Color.LightGray;
             this.labelVersionWarning.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -67,9 +48,6 @@
             this.labelVersionWarning.Text = "✔";
             this.labelVersionWarning.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.labelVersionWarning.Click += new System.EventHandler(this.labelVersionWarning_Click);
-            // 
-            // labelModWebsite
-            // 
             this.labelModWebsite.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelModWebsite.BackColor = System.Drawing.Color.Silver;
@@ -84,9 +62,6 @@
             this.labelModWebsite.Text = "Mod Version Link To Website";
             this.labelModWebsite.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.labelModWebsite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.labelModWebsite_LinkClicked);
-            // 
-            // textDescription
-            // 
             this.textDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -101,9 +76,6 @@
             this.textDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textDescription.Size = new System.Drawing.Size(392, 345);
             this.textDescription.TabIndex = 6;
-            // 
-            // labelModAuthor
-            // 
             this.labelModAuthor.AutoSize = true;
             this.labelModAuthor.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Italic);
             this.labelModAuthor.Location = new System.Drawing.Point(31, 24);
@@ -111,9 +83,6 @@
             this.labelModAuthor.Size = new System.Drawing.Size(83, 19);
             this.labelModAuthor.TabIndex = 3;
             this.labelModAuthor.Text = "Mod Author";
-            // 
-            // labelModName
-            // 
             this.labelModName.AutoSize = true;
             this.labelModName.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold);
             this.labelModName.Location = new System.Drawing.Point(3, 2);
@@ -121,9 +90,6 @@
             this.labelModName.Size = new System.Drawing.Size(111, 25);
             this.labelModName.TabIndex = 2;
             this.labelModName.Text = "Mod Name";
-            // 
-            // ModDescriptionPage
-            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panelModDescription);

@@ -17,7 +17,7 @@ namespace SnakeBite.Forms
             labelHeader.Text = conflictMessage;
             Left = formInstallOrder.formLocation.X + ((formInstallOrder.formSize.Width - Width) / 2);
             Top = formInstallOrder.formLocation.Y + ((formInstallOrder.formSize.Height - Height) / 2);
-            _ = ShowDialog();
+            ShowDialog();
             return result;
         }
 
@@ -35,7 +35,7 @@ namespace SnakeBite.Forms
 
         private void formModConflict_HelpButtonClicked(object sender, CancelEventArgs e)
         {
-            _ = MessageBox.Show("Choosing to install this mod will overwrite existing mod or game files. Check the Debug Log to review these file conflicts." +
+            MessageBox.Show("Choosing to install this mod will overwrite existing mod or game files. Check the Debug Log to review these file conflicts." +
                 "\n\nWarning: overwriting a mod's data may cause problems in-game, which could affect your enjoyment. Install at your own risk." +
                 "\n\nIf you are installing multiple mods, cancelling this installation will not affect the other installation processes.", "Installing a mod with conflicts", MessageBoxButtons.OK, MessageBoxIcon.Question);
             e.Cancel = true;

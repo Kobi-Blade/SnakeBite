@@ -41,14 +41,10 @@ namespace SnakeBite
         private void formLauncher_Load(object sender, EventArgs e)
         {
             textInfo = cultureInfo.TextInfo;
-
-            // Retrieve and display version info
             FileVersionInfo MGSVersionInfo = FileVersionInfo.GetVersionInfo(Properties.Settings.Default.InstallPath + "\\mgsvtpp.exe");
 
             string SBVersion = Application.ProductVersion;
             string MGSVersion = MGSVersionInfo.ProductVersion;
-
-            // Update version text
             string VersionText = string.Format("MGSV {0} / SB {1}", MGSVersion, SBVersion);
             labelVersion.Text = VersionText;
             UpdateVersionLabel();
@@ -56,8 +52,6 @@ namespace SnakeBite
             buttonMods.Enabled = !BackupManager.ModsDisabled();
 
             SetupTheme();
-
-            // Fade in form
             Opacity = 0;
             int duration = 100;//in milliseconds
             int steps = 30;
@@ -84,11 +78,8 @@ namespace SnakeBite
 
         public void SetupTheme()
         {
-
-            // Load theme
             if (File.Exists(Properties.Settings.Default.ThemeFile))
             {
-                // attempt to load data from theme file
                 try
                 {
                     ZipFile themeFile = new ZipFile(Properties.Settings.Default.ThemeFile);
@@ -110,7 +101,6 @@ namespace SnakeBite
                     {
                         BackgroundImage = Image.FromStream(themeFile.GetInputStream(themeFile[bgEntry]));
                     }
-                    // TODO: implemenmt theme sound effects
                     int soundMoveEntry = themeFile.FindEntry("ui_move.wav", true);
                     if (soundMoveEntry >= 0)
                     {
@@ -129,7 +119,6 @@ namespace SnakeBite
             }
             else
             {
-                // Setup default theme
                 BackgroundImage = Properties.Resources.LAUNCHERBGv2;
                 baseColour = Color.Black;
                 hoverColour = Color.Red;
@@ -148,7 +137,6 @@ namespace SnakeBite
 
         private void formLauncher_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Handle keypresses on launcher
             switch (e.KeyChar)
             {
                 case (char)Keys.Escape:
@@ -212,7 +200,7 @@ namespace SnakeBite
             SettingsManager manager = new SettingsManager(GamePaths.SnakeBiteSettings);
             if (manager.ValidInstallPath)
             {
-                _ = Process.Start(GamePaths.GameDir + "\\mgsvtpp.exe");
+                Process.Start(GamePaths.GameDir + "\\mgsvtpp.exe");
                 if (Properties.Settings.Default.CloseSnakeBiteOnLaunch)
                 {
                     ExitLauncher(silent);
@@ -220,7 +208,7 @@ namespace SnakeBite
             }
             else
             {
-                _ = MessageBox.Show("Unable to locate MGSVTPP.exe. Please check the Settings and try again.", "Error launching MGSV", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Unable to locate MGSVTPP.exe. Please check the Settings and try again.", "Error launching MGSV", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -228,7 +216,7 @@ namespace SnakeBite
         {
             PlaySound("ui_select");
             formMods Mods = new formMods();
-            _ = Mods.ShowDialog();
+            Mods.ShowDialog();
         }
 
         private void ShowConfiguration()
@@ -238,7 +226,7 @@ namespace SnakeBite
             {
                 Owner = this
             };
-            _ = Settings.ShowDialog();
+            Settings.ShowDialog();
             buttonMods.Enabled = !BackupManager.ModsDisabled();
         }
 
@@ -278,7 +266,7 @@ namespace SnakeBite
         {
             try
             {
-                _ = Process.Start(GamePaths.SBInstallDir);
+                Process.Start(GamePaths.SBInstallDir);
             }
             catch
             {
@@ -307,8 +295,8 @@ namespace SnakeBite
         {
             if (e.Button == MouseButtons.Left)
             {
-                _ = ReleaseCapture();
-                _ = SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
             }
         }
 

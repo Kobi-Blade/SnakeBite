@@ -2,15 +2,7 @@
 {
     partial class NoInstalledPage
     {
-        /// <summary> 
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
-
-        /// <summary> 
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -21,11 +13,6 @@
         }
 
         #region Component Designer generated code
-
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             this.panelNoInstalled = new System.Windows.Forms.Panel();
@@ -34,9 +21,6 @@
             this.labelNoModInstruction = new System.Windows.Forms.Label();
             this.panelNoInstalled.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // panelNoInstalled
-            // 
             this.panelNoInstalled.BackColor = System.Drawing.Color.Gray;
             this.panelNoInstalled.Controls.Add(this.linkLabelSnakeBiteModsList);
             this.panelNoInstalled.Controls.Add(this.labelNoMod);
@@ -46,9 +30,6 @@
             this.panelNoInstalled.Name = "panelNoInstalled";
             this.panelNoInstalled.Size = new System.Drawing.Size(400, 424);
             this.panelNoInstalled.TabIndex = 0;
-            // 
-            // linkLabelSnakeBiteModsList
-            // 
             this.linkLabelSnakeBiteModsList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.linkLabelSnakeBiteModsList.BackColor = System.Drawing.Color.Transparent;
@@ -61,9 +42,6 @@
             this.linkLabelSnakeBiteModsList.Text = "Browse SnakeBite Compatible Mods";
             this.linkLabelSnakeBiteModsList.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.linkLabelSnakeBiteModsList.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelSnakeBiteModsList_LinkClicked);
-            // 
-            // labelNoMod
-            // 
             this.labelNoMod.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelNoMod.BackColor = System.Drawing.Color.Transparent;
@@ -74,9 +52,6 @@
             this.labelNoMod.TabIndex = 1;
             this.labelNoMod.Text = "No Mods Installed";
             this.labelNoMod.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            // 
-            // labelNoModInstruction
-            // 
             this.labelNoModInstruction.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelNoModInstruction.BackColor = System.Drawing.Color.Transparent;
@@ -87,9 +62,6 @@
             this.labelNoModInstruction.TabIndex = 0;
             this.labelNoModInstruction.Text = "To install mods, click \"Install .MGSV File(s)\"";
             this.labelNoModInstruction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // NoInstalledPage
-            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panelNoInstalled);

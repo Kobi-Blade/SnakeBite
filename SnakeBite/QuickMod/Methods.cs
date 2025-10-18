@@ -79,7 +79,7 @@ namespace SnakeBite.QuickMod
                 string newPath = Path.Combine(OutputDir, file.Substring(f.Length + 1));
                 if (!Directory.Exists(Path.GetDirectoryName(newPath)))
                 {
-                    _ = Directory.CreateDirectory(Path.GetDirectoryName(newPath));
+                    Directory.CreateDirectory(Path.GetDirectoryName(newPath));
                 }
 
                 File.Move(file, newPath);
@@ -110,7 +110,6 @@ namespace SnakeBite.QuickMod
                 string ShortFileName = File.Substring(SourceFolder.Length + 1);
                 if (File.ToLower().EndsWith(".fpk") || File.ToLower().EndsWith(".fpkd"))
                 {
-                    // do fpk
                     List<string> fpkCont = GzsLib.ListArchiveContents<FpkFile>(File);
                     foreach (string fpkFile in fpkCont)
                     {
@@ -124,7 +123,6 @@ namespace SnakeBite.QuickMod
                 }
                 else
                 {
-                    // do qar
                     qarEntries.Add(new ModQarEntry() { FilePath = ShortFileName, SourceType = FileSource.Mod });
                 }
             }

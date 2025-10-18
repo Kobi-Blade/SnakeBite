@@ -2,15 +2,7 @@
 {
     partial class PreinstallDescriptionPage
     {
-        /// <summary> 
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
-
-        /// <summary> 
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -21,11 +13,6 @@
         }
 
         #region Component Designer generated code
-
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             this.panelInfo = new System.Windows.Forms.Panel();
@@ -39,9 +26,6 @@
             this.labelModAuthor = new System.Windows.Forms.Label();
             this.panelInfo.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // panelInfo
-            // 
             this.panelInfo.BackColor = System.Drawing.Color.DarkGray;
             this.panelInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelInfo.Controls.Add(this.labelVersionWarning);
@@ -56,9 +40,6 @@
             this.panelInfo.Name = "panelInfo";
             this.panelInfo.Size = new System.Drawing.Size(356, 373);
             this.panelInfo.TabIndex = 10;
-            // 
-            // labelVersionWarning
-            // 
             this.labelVersionWarning.BackColor = System.Drawing.Color.LightGray;
             this.labelVersionWarning.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.labelVersionWarning.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -70,9 +51,6 @@
             this.labelVersionWarning.TabIndex = 14;
             this.labelVersionWarning.Text = "✔";
             this.labelVersionWarning.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // labelInstallWarning
-            // 
             this.labelInstallWarning.BackColor = System.Drawing.Color.LightGray;
             this.labelInstallWarning.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.labelInstallWarning.Cursor = System.Windows.Forms.Cursors.Help;
@@ -84,9 +62,6 @@
             this.labelInstallWarning.TabIndex = 10;
             this.labelInstallWarning.Text = "?";
             this.labelInstallWarning.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // labelConflictCount
-            // 
             this.labelConflictCount.BackColor = System.Drawing.Color.Silver;
             this.labelConflictCount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.labelConflictCount.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
@@ -96,9 +71,6 @@
             this.labelConflictCount.TabIndex = 11;
             this.labelConflictCount.Text = "0 Conflicts Detected";
             this.labelConflictCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // textConflictDescription
-            // 
             this.textConflictDescription.BackColor = System.Drawing.Color.Silver;
             this.textConflictDescription.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textConflictDescription.Cursor = System.Windows.Forms.Cursors.Default;
@@ -112,9 +84,6 @@
             this.textConflictDescription.Text = "Conflict Description";
             this.textConflictDescription.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textConflictDescription.WordWrap = false;
-            // 
-            // textModDescription
-            // 
             this.textModDescription.BackColor = System.Drawing.Color.Silver;
             this.textModDescription.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textModDescription.Cursor = System.Windows.Forms.Cursors.Default;
@@ -127,9 +96,6 @@
             this.textModDescription.Size = new System.Drawing.Size(346, 142);
             this.textModDescription.TabIndex = 10;
             this.textModDescription.Text = "Mod Description";
-            // 
-            // labelModWebsite
-            // 
             this.labelModWebsite.BackColor = System.Drawing.Color.Silver;
             this.labelModWebsite.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.labelModWebsite.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -142,9 +108,6 @@
             this.labelModWebsite.TabStop = true;
             this.labelModWebsite.Text = "Mod Version Link To Website";
             this.labelModWebsite.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // labelModName
-            // 
             this.labelModName.AutoSize = true;
             this.labelModName.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold);
             this.labelModName.Location = new System.Drawing.Point(3, 0);
@@ -152,9 +115,6 @@
             this.labelModName.Size = new System.Drawing.Size(111, 25);
             this.labelModName.TabIndex = 10;
             this.labelModName.Text = "Mod Name";
-            // 
-            // labelModAuthor
-            // 
             this.labelModAuthor.AutoSize = true;
             this.labelModAuthor.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Italic);
             this.labelModAuthor.Location = new System.Drawing.Point(31, 22);
@@ -162,9 +122,6 @@
             this.labelModAuthor.Size = new System.Drawing.Size(83, 19);
             this.labelModAuthor.TabIndex = 11;
             this.labelModAuthor.Text = "Mod Author";
-            // 
-            // PreinstallDescriptionPage
-            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panelInfo);
